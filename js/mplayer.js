@@ -1,423 +1,713 @@
 /**
- * 创建mplayer播放器
- * @param {object} settings 设置信息
+ * MPlayer音乐播放器
+ * @authors 0936zz(zz5840@qq.com)
+ * 本插件依赖：jQuery 1.6及以上
  */
-if (typeof jQuery != 'function') {
-	throw new Error("mPlayer插件需要jQuery支持");
-}
-(function ($) {
-	function MPlayer (settings) {
-		$this = this;
-		$this.settings = {
-			playMode:0,
-			playList:0,
-			playSong:5,
-			autoPlay:false,
-			playRotate:true,
-			useDefaultStyle:true,
-			lrcHeight:160,
-		};
-		$this.init(settings);
-		$this.dataList();
-		$this.bindEvents();
-		$this.play($this.settings.playList,$this.settings.playSong);
-	}
-	// 格式化数据
-	MPlayer.prototype.dataList = function(){
-		$this = this;
-		$this.songArr = [];
-		for (var i = 0; i < $this.settings.songList.length; i++) {
-			var basicSinger = '',
-				basicImage = '';
-				$this.songArr.push([]);
-			for (var j = 0; j < $this.settings.songList[i].length; j++) {
-				if ($this.settings.songList[i][j].basic) {
-					// 添加列表到页面
-					var listName = $this.settings.songList[i][j].name;
-					$this.doms.list.append($('<li>').html(listName));
-					basicSinger = $this.settings.songList[i][j].singer || '';
-					basicImage = $this.settings.songList[i][j].img || '';
-					$this.songArr[i].listName = listName;
-				} else {
-					var singerName = $this.settings.songList[i][j].singer || basicSinger,
-						songImg = $this.settings.songList[i][j].img || basicImage,
-						songName = $this.settings.songList[i][j].name;
-					$this.songArr[i].push({
-						'singer':singerName,
-						'image':songImg,
-						'name':songName,
-						'src':$this.settings.songList[i][j].src,
-						'lrc':$this.settings.songList[i][j].lrc
-					});
-				}
-			}
-		}
-	};
-
-	// 初始化
-	MPlayer.prototype.init = function(settings){
-		$this = this;
-		$.extend($this.settings,settings);
-		if (!$this.settings.containerSelector) {
-			throw new Error('您未填写容器选择器(containerSelector)配置');
-		}
-		if (!$this.settings.songList) {
-			throw new Error('您未填写歌曲列表(songList)配置');
-		}
-		// 输出html
-		$($this.settings.containerSelector).append('<div id="mp-container" class="mp"><div class="mp-playbox"><div id="mp-cover" class="mp-cover"><img src="#" alt="cover" id="mp-cover-img"></div><div class="mp-playing-name" id="mp-playing-name"><h2>歌名<small>歌手</small></h2></div><div class="mp-progress"><div class="mp-progress-total" id="mp-play-progress-total"><div class="mp-progress-current" id="mp-play-progress-current"></div></div><div class="mp-progress-time"><span id="mp-play-progress-currenttime">00:00</span>/<span id="mp-play-progress-alltime">00:00</span></div></div><div class="mp-control"><div class="mp-buttonbox"><a href="javascript:void(0);" class="mp-button mp-hover" id="mp-button-prev">&#xe90b;</a><a href="javascript:void(0);" class="mp-button mp-hover mp-button-play" id="mp-button-play">&#xe908;</a><a href="javascript:void(0);" class="mp-button mp-hover" id="mp-button-next">&#xe90c;</a></div><div id="mp-modebox" class="mp-modebox"><a href="javascript:void(0);" class="mp-mode-button mp-hover">&#xe040;</a><a href="javascript:void(0);" class="mp-mode-button mp-hover">&#xe041;</a><a href="javascript:void(0);" class="mp-mode-button mp-hover">&#xe043;</a></div><a href="javascript:void(0);" class="mp-menu-switch mp-hover" id="mp-menu-switch" >&#xe901;</a><div class="mp-volbox"><a href="javascript:void(0);" class="mp-vol-mute mp-icon mp-hover" id="mp-vol-mute">&#xe903;</a><input type="range" id="mp-vol-range" class="mp-vol-range" min="0" max="100" value="100"></div></div></div><div id="mp-lrcbox" class="mp-lrc-box"><ul id="mp-lrc-wrap" class="mp-lrc-wrap"></ul></div><div class="mp-listbox"><div id="mp-list-select" class="mp-list-select"><h3 class="mp-list-title">播放列表</h3><ul id="mp-list-select-ul" class="mp-list-select-ul"></ul></div><ul id="mp-list" class="mp-list"></ul></div></div>');
-		// 初始化dom元素
-		$this.doms = {
-			mp:$('#mp-container'),
-			lrc:$('#mp-lrc-wrap'),
-			lrcBox:$('#mp-lrcbox'),
-			listtitle:$('#mp-list-select h3'),
-			title:$('#mp-playing-name'),
-			list:$('#mp-list-select-ul'),
-			musicList:$('#mp-list'),
-			process:$('#mp-play-progress-current'),
-			bufferProcess:$('#mp-play-progress-buffer'),
-			totalProcess:$('#mp-play-progress-total'),
-			cover:$('#mp-cover-img'),
-			coverBox:$('#mp-cover'),
-			playbutton:$('#mp-button-play'),
-			prevbutton:$('#mp-button-prev'),
-			nextbutton:$('#mp-button-next'),
-			modebox:$('#mp-modebox'),
-			modebuttons:$('#mp-modebox').find('a'),
-			listSelect:$('#mp-list-select-ul'),
-			volume:$('#mp-vol-mute'),
-			volRange:$('#mp-vol-range')
-		};
-		// 设置播放模式
-		$this.doms.modebuttons.eq($this.settings.playMode).addClass('mp-deep');
-		// 创建audio标签
-		$this.audiodom = $('<audio></audio>').attr({
-			'preload':'preload',
-			'data-playmode':$this.settings.playMode,
-			'data-currentlist':$this.settings.playList,
-			'data-currentsong':$this.settings.playSong,
-			'data-currentLrc':0,
-			'data-displayList':0
+var MPlayer = (function () {
+	function MPlayer(settings,callback) {
+		var $this = this;
+		init(callback);
+		bindEvents();
+		formatData();
+		// 切换播放模式
+		$this.changePlayMode($this.settings.playMode);
+		// 循环输出列表标题
+		var listHTML = '';
+		$.each($this.list, function (i) {
+			listHTML += '<li class="mp-list-title-'+ i +'">' + $this.list[i].listName + '</li>';
 		});
-		// 工具函数
-		$this.tools = {
-			rand:function (min,max) {
-				if (!max) {
-					max = min;
-					min = 0;
-				}
-				var r = 0;
-				do {
-					r = Math.round(Math.random() * max);
-				} while(r < min);
-				return r;
-			},
-			fillByZero:function (num,digit) {
-				num = String(num);
-				for (var i = num.length; i < digit; i++) {
-					num = '0' + num;
-				}
-				return num;
-			}
-		};
-		if ($this.settings.useDefaultStyle) {
-			// 设置style
-			var lrcHeight = $this.settings.lrcHeight;
-			$this.doms.lrcBox.height(lrcHeight);
-			var mpHeight = 160 + lrcHeight;
-			$this.doms.mp.height(mpHeight);
-			var margin = Math.max((lrcHeight - 40) / 2,0);
-			$this.doms.lrc.css({
-				marginTop:margin,
-				marginBottom:margin
-			});
-			var listHeight = Math.min(mpHeight - 100,400);
-			$('head').append('<style>.mp-list-on .mp-listbox{height:' + listHeight + 'px}</style>');
-			$this.doms.musicList.height(listHeight - 40);
+		$this.dom.listTitle.html(listHTML);
+		$this._setLrc($this.list[0][0].lrc);
+		// 输出列表
+		$this.changeList($this.settings.playList);
+		// afterInit事件
+		$this._trigger('afterInit');
+		// 自动播放
+		if ($this.settings.autoPlay) {
+			$this.play($this.settings.playList,$this.settings.playSong);
+		} else {
+			$this._setInfo($this.settings.playList,$this.settings.playSong);
 		}
-	};
+		/**
+		 * 初始化播放器
+		 */
+		function init (callback) {
+			// 设置默认参数
+			$this.settings = {
+				playMode:3,
+				playList:0,
+				playSong:0,
+				autoPlay:false,
+				lrcTopPos:0,
+				defaultVolume:100
+			};
+			$this.callbacks = {
+				afterInit:null,
+				beforePlay:null,
+				timeUpdate:null,
+				end:null,
+				mute:null,
+				changeMode:null
+			};
+			// 合并设置项
+			$.extend(true,$this.settings,settings);
+			// 获取container容器
+			var con = $($this.settings.containerSelector);
+			// 创建audio标签
+			$this.audio = $('<audio></audio>').attr({
+				'data-currentLrc':0,
+				'data-currentSong':0,
+				'data-currentList':0,
+				'data-displayList':0,
+				'data-playMode':0,
+				'preload':'preload'
+			});
+			// 存储dom方便以后使用
+			$this.dom = {
+				container:con,
+				cover:con.find('.mp-cover'),
+				name:con.find('.mp-name'),
+				singer:con.find('.mp-singer'),
+				currentTime:con.find('.mp-time-current'),
+				allTime:con.find('.mp-time-all'),
+				prev:con.find('.mp-prev'),
+				play:con.find('.mp-pause'),
+				next:con.find('.mp-next'),
+				vol:con.find('.mp-vol-img'),
+				volRange:con.find('.mp-vol-range'),
+				progress:con.find('.mp-pro-current'),
+				progressAll:con.find('.mp-pro'),
+				lrc:con.find('.mp-lrc'),
+				listTitle:con.find('.mp-list-title'),
+				list:con.find('.mp-list')
+			};
+			$this.settings.lineHeight = parseInt($this.dom.lrc.css('line-height'));
+			// 计算列表模板的有效元素
+			$this.settings.listEleName = $.parseHTML($this.settings.listFormat)[0].nodeName.toLowerCase();
+			// 调用绑定事件的回调函数
+			callback.apply($this);
+		}
 
 
+		/**
+		 * 绑定事件
+		 */
+		function bindEvents () {
+			// 专辑图片加载失败将使用默认图片
+			$this.dom.cover.error(function () {
+				$(this).attr('src',$this.settings.defaultImg);
+			});
+			// 上一首
+			$this.dom.prev.click(function() {
+				$this.prev();
+			});
+			// 下一首
+			$this.dom.next.click(function () {
+				$this.next();
+			});
+			// 播放 or 暂停
+			$this.dom.play.click(function () {
+				if ($this.audio.prop('paused')) {
+					$this.play();
+				} else {
+					$this.pause();
+				}
+			});
+			// 改变音量
+			$this.dom.volRange.on($this.settings.volSlideEventName,function (event,val) {
+				$this.audio.prop('volume',val/100);
+			});
+			// 静音
+			$this.dom.vol.click(function () {
+				$this.toggleMute();
+			});
+			// 列表切换
+			$this.dom.listTitle.on('click','li', function () {
+				// 获取索引
+				var list = $(this).index();
+				$this.changeList(list);
+			});
+			$this.audio.on('canplay',function () {
+				setTime($this.getDuration(),$this.dom.allTime);
+			}).on('timeupdate', function () {
+				var currentTime = $this.getCurrentTime();
+				// 修改时间
+				setTime(currentTime,$this.dom.currentTime);
+				// 更新进度条
+				$this.dom.progress.css('width',$this.getPercent()*100+'%');
+				// 更新歌词
+				var dataLrc = parseInt($this.audio.attr('data-currentLrc'));
+				var currentLrc = $this.getLrc(currentTime,false);
+				// 判断是否需要切换歌词
+				if (dataLrc != currentLrc) {
+					// 设置当前歌词
+					$this.audio.attr('data-currentLrc',currentLrc);
+					// 删除以前添加的class
+					$this.dom.lrc.find('.mp-lrc-current').removeClass('mp-lrc-current');
+					// 添加class
+					var position = $this.dom.lrc.find('.mp-lrc-time-'+currentLrc).addClass('mp-lrc-current').position();
+					// 计算滚动的高度
+					var positionTop = position ? position.top : 0;
+					var top = $this.dom.lrc.scrollTop();
+					// 动画滚动
+					$this.dom.lrc.animate({
+						scrollTop:top + positionTop - $this.settings.lrcTopPos
+					},200);
+				}
+				// 触发onTimeUpdate事件
+				$this._trigger('timeUpdate');
+			}).on('ended', function () {
+				// 触发onEnd事件
+				var flag = $this._trigger('end');
+				if (flag !== false) {
+					next();
+				}
+			});
+			// 计算列表模板的有效元素
+			var eleName = $.parseHTML($this.settings.listFormat)[0].nodeName.toLowerCase();
+			$this.dom.list.on('click',eleName, function () {
+				$this.play(parseInt($this.audio.attr('data-displayList')),$(this).index());
+			});
+			// 进度条
+			$this.dom.progressAll.click(function (event) {
+				var width = $(this).width();
+				var offset = Math.min(Math.max(event.offsetX,0),width);
+				var percent = offset / width;
+				$this.setCurrentTime($this.getDuration() * percent);
+			});
+			// 列表点击切换歌曲
+			$this.dom.list.on('click',$this.settings.listEleName, function () {
+				$this.play(parseInt($this.audio.attr('data-displayList')),$(this).index());
+			});
+			// 禁止点击
+			$this.dom.container.on('mousedown','.mp-disabled', function () {
+				return false;
+			})
+		}
 
-	MPlayer.prototype.bindEvents = function(){
-		$this = this;
-		$this.audiodom.bind('canplay', function () {
-			if ($this.settings.autoPlay) {
-				$(this).get(0).play();
+		/**
+		 * 格式化数据
+		 */
+		function formatData () {
+			$this.list = [];
+			var list = $this.settings.songList;
+			for (var i = 0; i < list.length;i++) {
+				$this.list[i] = [];
+				// 寻找列表公用数据
+				for (var j = 0; j < list[i].length;j++) {
+					if (list[i][j].basic) {
+						$this.list[i].listName = list[i][j].name || '-';
+						$this.list[i].singerName = list[i][j].singer || '-';
+						$this.list[i].imgSrc = list[i][j].img || $this.settings.defaultImg;
+						list[i].splice(j,1);
+						break;
+					}
+				}
+				// 添加歌曲
+				$this.addSong(list[i],i);
 			}
-			$this.settings.autoPlay = true;
-			var duration = $(this).prop('duration');
-			$this.setTime(duration,'mp-play-progress-alltime');
-			if ($this.settings.canPlay) {
-				var l = parseInt($this.audiodom.attr('data-currentList'));
-				var s = parseInt($this.audiodom.attr('data-currentSong'));
-				var data = $this.songArr[l][s];
-				$this.settings.canPlay({
-					name:data.name,
-					singer:data.singer,
-					duration:duration
-				});
+		}
+
+		/**
+		 * 计算正常播放下一曲
+		 */
+		function next () {
+			var mode = parseInt($this.audio.attr('data-playMode'));
+			var songNum = $this.getSongNum();
+			switch (mode) {
+				case 0: // 顺序
+					var currentSong = $this.audio.attr('data-currentSong');
+					if (currentSong != songNum-1) {
+						$this.next();
+					} else {
+						$this.pause();
+					}
+					break;
+				case 1: // 单曲
+					$this.play();
+					break;
+				case 2: // 随机
+				case 3:
+				default: // 列表
+					$this.next();
+					break;
 			}
-		}).bind('play', function() {
-			if ($this.settings.playRotate) {
-				$this.doms.coverBox.addClass('mp-cover-animate');
+		}
+
+		/**
+		 * 设置时间
+		 * @param time {number} 时间，单位秒
+		 * @param ele {jQuery} 元素
+		 */
+		function setTime (time,ele) {
+			var minute = fillByZero(Math.floor(time/60),2);
+			var second = fillByZero(Math.floor(time % 60),2);
+			ele.html(minute + ':' + second);
+		}
+
+		/**
+		 * 用0填充
+		 * @param num
+		 * @param digit
+		 * @returns {string|number}
+		 */
+		function fillByZero (num,digit) {
+			num = String(num);
+			for (var i = num.length; i < digit; i++) {
+				num = '0' + num;
 			}
-			$this.doms.playbutton.html('&#xe909;');
-		}).bind('pause', function() {
-			$this.doms.coverBox.removeClass('mp-cover-animate');
-			$this.doms.playbutton.html('&#xe908;');
-		}).bind('ended', function() {
-			$this.toNext();
-		}).bind('timeupdate', function(event) {
-			var timeArr = $this.audiodom.prop('timeArr');
-			var currentTime = Math.round($(this).prop('currentTime')*1000);
-			// 更新歌词
-			for (var i = 0; i < timeArr.length; i++) {
-				if (currentTime <= timeArr[i]) {
+			return num;
+		}
+	}
+	$.extend(MPlayer.prototype,{
+		/**
+		 * 更换歌词
+		 * @param lrc
+		 * @private
+		 */
+		_setLrc: function (lrc) {
+			var $this = this;
+			$this.dom.lrc.html('').scrollTop(0);
+			$.each(lrc, function (index,val) {
+				$this.dom.lrc.append($('<li></li>').addClass('mp-lrc-time-'+index).html(val));
+			});
+		},
+		/**
+		 * 更换播放器的歌曲信息
+		 * @param list
+		 * @param song
+		 * @private
+		 */
+		_setInfo: function (list,song) {
+			var $this = this;
+			var songInfo = $this.getInfo(list,song);
+			// 设置当前播放歌曲
+			$this.audio.attr({
+				'src':songInfo.src,
+				'data-currentList':list,
+				'data-currentSong':song
+			});
+			// 输出歌名和歌手
+			$this.dom.name.html(songInfo.name);
+			$this.dom.singer.html(songInfo.singer);
+			// 更换封面
+			$this.dom.cover.attr('src',songInfo.img);
+			// 更换歌词
+			$this._setLrc(songInfo.lrc);
+			// 进度条归零
+			$this.dom.progress.width(0);
+			// 列表添加样式
+			if (list == $this.getDisplayList()) {
+				$this._setCurrent(song);
+			}
+		},
+		/**
+		 * 为当前播放歌曲添加class
+		 * @param song
+		 * @private
+		 */
+		_setCurrent: function (song) {
+			var $this = this;
+			var items = $this.dom.list;
+			items.find('.mp-list-current').removeClass('mp-list-current');
+			items.children().eq(song).addClass('mp-list-current');
+		},
+		/**
+		 * 解析歌词字符串
+		 * @param lrc
+		 * @returns {Object}
+		 * @private
+		 */
+		_parseLrc: function  (lrc) {
+			var reg = /\[(\d{2})(&#58;|:)(\d{2})(&#46;|\.)(\d{2})\]([^\[]+)/g;
+			var obj = {};
+			// 匹配歌词
+			while (true) {
+				var result = reg.exec(lrc);
+				if (!result) {
 					break;
 				}
+				var time = Math.round((parseInt(result[1])*60 + parseInt(result[3]) + parseInt(result[5])/100)*1000);
+				obj[time] = $.trim(result[6]) || ' ';
 			}
-			i--;
-			if (parseInt($this.audiodom.attr('data-currentLrc')) !== i) {
-				$this.audiodom.attr('data-currentLrc', i);
-				$this.doms.lrcBox.animate({scrollTop: i*32}, 500);
-				$('#mp-lrc-wrap').find('.mp-lrc-current').removeClass('mp-lrc-current');
-				$('#mp-lrc-'+timeArr[i]).addClass('mp-lrc-current');
+			return obj;
+		},
+		/**
+		 * 触发事件
+		 * @param name
+		 * @private
+		 */
+		_trigger: function (name) {
+			var $this = this;
+			return $this.callbacks[name] && $this.callbacks[name].apply($this);
+		},
+		/**
+		 * 获取随机数
+		 * @param min
+		 * @param max
+		 * @returns {number}
+		 * @private
+		 */
+		_rand: function (min,max) {
+			if (max === undefined) {
+				max = min;
+				min = 0;
 			}
-			// 更新进度条
-			$this.doms.process.css('width', $(this).prop('currentTime')/$(this).prop('duration')*100+'%');
-			// 更新显示时间
-			$this.setTime($(this).prop('currentTime'),'mp-play-progress-currenttime');
-		});
-		// 播放按钮
-		$this.doms.playbutton.on('click', function() {
-			if ($this.audiodom.get(0).paused) {
-				$this.audiodom.get(0).play();
+			var r = 0;
+			do {
+				r = Math.round(Math.random() * max);
+			} while(r < min);
+			return r;
+		},
+		/**
+		 * 下一首
+		 */
+		next: function () {
+			var $this = this;
+			var mode = $this.getPlayMode();
+			var songNum = $this.getSongNum();
+			switch (mode) {
+				case 2: // 随机
+					var song = $this._rand(0,songNum-1);
+					$this.play(song);
+					break;
+				case 0: // 顺序
+				case 3: // 列表
+				case 1: // 单曲
+				default:
+					var nextSong = $this.getCurrentSong() + 1;
+					if (nextSong >= songNum) {
+						nextSong = 0;
+					}
+					$this.play(nextSong);
+					break;
+			}
+		},
+		/**
+		 * 上一首
+		 */
+		prev: function () {
+			var $this = this;
+			var lastSong = $this.getCurrentSong() - 1;
+			var currentList = $this.getCurrentList(true);
+			if (lastSong < 0) {
+				lastSong = currentList.num - 1;
+			}
+			$this.play(lastSong);
+		},
+		/**
+		 * 播放
+		 * @param list 可选，详细见下方说明
+		 * @param song 可选，详细见下方说明
+		 * 注：此函数有三种传参形式
+		 * 1. 不传任何参数：代表播放已暂停的歌曲，如果正在播放就什么也不做
+		 * 2. 只传一个参数：代表播放当前列表的第list首歌
+		 * 3. 两个参数都传：代表播放第list个列表的第song首歌
+		 */
+		play: function (list,song) {
+			var $this = this;
+			if (list === undefined && song === undefined) {
+				var flag = $this._trigger('beforePlay');
+				if (flag === false) {
+					return false;
+				} else{
+					$this.audio.get(0).play();
+					$this.dom.play.addClass('mp-play');
+				}
+			} else if (list !== undefined && song === undefined) {
+				song = list;
+				list = $this.getCurrentList();
+				$this.play(list,song);
 			} else {
-				$this.audiodom.get(0).pause();
+				var num = $this.getSongNum(list);
+				if (song >= num) {
+					song = num - 1;
+				} else if (song < 0) {
+					song = 0;
+				}
+				$this._setInfo(list,song);
+				$this.play();
 			}
-		});
-		// 上一首
-		$this.doms.prevbutton.on('click', function() {
-			var mode = parseInt($this.audiodom.attr('data-playmode'));
-			var s = parseInt($this.audiodom.attr('data-currentsong'));
-			var l = parseInt($this.audiodom.attr('data-currentlist'));
-			if (mode == 2) {
-				$this.rand(l,s);
+		},
+		/**
+		 * 暂停，如果已暂停就什么也不做
+		 */
+		pause: function () {
+			var $this = this;
+			$this.dom.play.removeClass('mp-play');
+			$this.audio.get(0).pause();
+		},
+		/**
+		 * 获取当前歌曲的总时长
+		 * @returns {number}
+		 */
+		getDuration: function () {
+			return this.audio.prop('duration');
+		},
+		/**
+		 * 获取正在播放歌曲的当前时间
+		 * @returns {number}
+		 */
+		getCurrentTime: function () {
+			return this.audio.prop('currentTime');
+		},
+		/**
+		 * 获取当前歌曲已播放的百分比
+		 * @returns {number}
+		 */
+		getPercent: function () {
+			return this.getCurrentTime()/this.getDuration();
+		},
+		/**
+		 * 设置歌曲正在播放的时间
+		 * @param time {number} 时间，单位秒
+		 */
+		setCurrentTime: function (time) {
+			var $this = this;
+			time = Math.min(time,$this.getDuration());
+			time = Math.max(0,time);
+			var buffered = $this.audio.get(0).buffered;
+			var start = buffered.start(0);
+			var end = buffered.end(0);
+			time = Math.max(start,Math.min(end,time));
+			$this.audio.prop('currentTime',time);
+		},
+		/**
+		 * 向列表最后添加歌曲
+		 * @param data {Array} 歌曲信息列表
+		 * @param list {number} 可选，不传代表当前列表
+		 */
+		addSong: function (data,list) {
+			var $this = this;
+			list = list !== undefined ? list : $this.getCurrentList();
+			if (data instanceof Array) {
+				for (var i = 0; i < data.length;i++) {
+					$this.addSong(data[i],list);
+				}
 			} else {
-				$this.prev(l,s);
+				var basic = {
+					lrc:$this._parseLrc(data.lrc || '-'),
+					name:data.name || '-',
+					singer:data.singer || $this.list[list].singerName,
+					src:data.src || '-',
+					img:data.img || $this.list[list].imgSrc
+				};
+				var song = $.extend({},data,basic);
+				$this.list[list].push(song);
+				// 更新播放列表
+				if (list == $this.getCurrentList()) {
+					$this.changeList(list);
+				}
 			}
-		});
-		// 下一首
-		$this.doms.nextbutton.on('click', function() {
-			var mode = parseInt($this.audiodom.attr('data-playmode'));
-			var s = parseInt($this.audiodom.attr('data-currentsong'));
-			var l = parseInt($this.audiodom.attr('data-currentlist'));
-			if (mode == 2) {
-				$this.rand(l,s);
+		},
+		/**
+		 * 获取列表中歌曲的数目
+		 * @param list {number} 可选，不传代表当前列表
+		 * @returns {number}
+		 */
+		getSongNum: function (list) {
+			var $this = this;
+			list = list !== undefined ? list : $this.getCurrentList();
+			return $this.list[list].length;
+		},
+		/**
+		 * 获取当前播放歌曲的信息
+		 * @param info {boolean|} 可选，默认false，将返回歌曲id，填true可返回详细歌曲信息
+		 * @returns {object|int}
+		 */
+		getCurrentSong: function (info) {
+			var $this = this;
+			info = info !== undefined ? info : false;
+			if (info) {
+				return $this.getInfo();
 			} else {
-				$this.next(l,s);
+				return parseInt($this.audio.attr('data-currentSong'));
 			}
-		});
-		// 切换模式
-		$this.doms.modebox.on('click', 'a', function() {
-			$this.doms.modebuttons.removeClass('mp-deep');
-			$(this).addClass('mp-deep');
-			$this.audiodom.attr('data-playmode', $(this).index());
-		});
-		// 调整进度
-		$this.doms.totalProcess.click(function(event) {
-			var x = event.offsetX;
-			var percent = x/$(this).width();
-			percent = percent > 100 ? 100 : percent;
-			var alltime = $this.audiodom.prop('duration');
-			$this.audiodom.prop('currentTime', alltime * percent);
-		});
-		// 音量调节
-		$this.doms.volRange.on('change', function() {
-			var vol = $(this).val()/100;
-			$this.audiodom.prop('volume', vol);
-			if (vol >= 0.8) {
-				ico = '&#xe903';
-			} else if (vol >= 0.3 && vol < 0.8) {
-				ico = '&#xe904';
-			} else if (vol > 0 && vol < 0.3) {
-				ico = '&#xe905';
-			} else if (vol === 0) {
-				ico = '&#xe906';
-			}
-			$this.doms.volume.html(ico);
-		});
-		// 静音
-		$this.doms.volume.on('click', function() {
-			if ($this.doms.volume.hasClass('mp-disabled')) {
-				$this.doms.volume.removeClass('mp-disabled');
-				$this.doms.volRange.removeAttr('disabled').trigger('change');
+		},
+		/**
+		 * 获取当前播放列表的信息
+		 * @param info {boolean} 可选，默认false，将返回列表id，填true可返回详细列表信息
+		 * @returns {object|int}
+		 */
+		getCurrentList: function (info) {
+			var $this = this;
+			info = info !== undefined ? info : false;
+			if (info) {
+				return $this.getList($this.getCurrentList());
 			} else {
-				$this.doms.volume.addClass('mp-disabled');
-				$this.doms.volume.html('&#xe907');
-				$this.audiodom.prop('volume', 0);
-				$this.doms.volRange.attr('disabled','disabled');
+				return parseInt($this.audio.attr('data-currentList'));
 			}
-		});
-		// 列表开关
-		$('#mp-menu-switch').on('click', function() {
-			$this.doms.mp.toggleClass('mp-list-on');
-		});
-		// 显示列表
-		$this.doms.listtitle.on('click', function() {
-			$('#mp-list-select').toggleClass('mp-list-select-on');
-		});
-		// 切换列表
-		$this.doms.listSelect.on('click', 'li', function() {
-			$this.changeList($(this).index());
-			$(this).parent().parent().removeClass('mp-list-select-on');
-		});
-		// 切换歌曲
-		$this.doms.musicList.on('click', 'li', function() {
-			$this.doms.mp.removeClass('mp-list-on');
-			$this.play(parseInt($this.audiodom.attr('data-displayList')),$(this).index());
-		});
-	};
-
-
-	/**
-	 * 播放指定音乐
-	 * @param  {number} list 列表id
-	 * @param  {number} song 歌曲id
-	 */
-	MPlayer.prototype.play = function(list,song){
-		$this = this;
-		var currentSong = $this.songArr[list][song];
-		$this.audiodom.attr({
-			src: currentSong.src,
-			'data-currentsong': song,
-			'data-currentlist':list
-		});
-		$this.doms.lrcBox.animate({scrollTop: 0}, 500);
-		$this.doms.cover.attr('src', currentSong.image);
-		$this.doms.title.html('<h2>'+ currentSong.name + '<small>'+ currentSong.singer +'</small></h2>');
-		$this.changeList(list);
-		$this.setLrc(currentSong.lrc);
-		$this.audiodom.attr('data-currentLrc', 0);
-		if ($this.settings.beforePlay) {
-			$this.settings.beforePlay(currentSong);
-		}
-	};
-
-
-	/**
-	 * 更换显示列表
-	 * @param  {number} list 列表序号
-	 */
-	MPlayer.prototype.changeList = function (list) {
-		$this = this;
-		$this.doms.listtitle.html($this.songArr[list].listName);
-		$this.doms.musicList.html('');
-		for (var i = 0; i < $this.songArr[list].length; i++) {
-			$this.doms.musicList.append($('<li>').html($this.songArr[list][i].name + ' - ' + $this.songArr[list][i].singer).addClass('mp-list-song'));
-		}
-		$this.audiodom.attr('data-displayList', list);
-		if (parseInt($this.audiodom.attr('data-currentlist')) === list) {
-			var song = $this.audiodom.attr('data-currentsong');
-			$('#mp-list').find('li').eq(song).addClass('mp-list-song-current');
-		}
-	};
-
-	/**
-	 * 设置显示时间
-	 * @param {float} time 时间(s)
-	 * @param {string} ele  显示元素id
-	 */
-	MPlayer.prototype.setTime = function (time,ele) {
-		$this = this;
-		var tools = $this.tools;
-		var min = tools.fillByZero(parseInt(time/60),2);
-		time -= min*60;
-		var second = tools.fillByZero(Math.round(time),2);
-		$('#'+ele).html(min+':'+second);
-	};
-
-	/**
-	 * 设置显示歌词
-	 * @param {string} lrc 歌词字符串
-	 */
-	MPlayer.prototype.setLrc = function (lrc) {
-		$this = this;
-		// 匹配歌词的正则表达式
-		var reg = /\[(\d{2}):(\d{2})\.(\d{2})\]([^\n\r]*)/g;
-		var lrcObj = {};
-		while (true) {
-			var result = reg.exec(lrc);
-			if (!result) {
-				break;
+		},
+		/**
+		 * 获取当前播放列表的信息
+		 * @param info {boolean} 可选，默认false，将返回列表id，填true可返回详细列表信息
+		 * @returns {object|int}
+		 */
+		getDisplayList: function (info) {
+			var $this = this;
+			info = info !== undefined ? info : false;
+			if (info) {
+				return $this.getList($this.getDisplayList());
+			} else {
+				return parseInt($this.audio.attr('data-displayList'));
 			}
-			var time = Math.round((parseInt(result[1])*60 + parseInt(result[2]) + parseInt(result[3])/100)*1000);
-			lrcObj[time] = $.trim(result[4]);
+		},
+		/**
+		 * 返回指定listID的信息
+		 * @param list
+		 * @returns {{name: (string|*), num, songs: *}}
+		 */
+		getList: function (list) {
+			var $this = this;
+			var listArr = $this.list[list];
+			return {
+				name: listArr.listName,
+				num: listArr.length,
+				songs: listArr
+			};
+		},
+		/**
+		 * 获取指定id的歌曲信息
+		 * @param list {number} 列表id 可选，不填代表当前列表
+		 * @param song {number} 歌曲id 可选，不填代表当前歌曲
+		 * 注：当只传一个参数时代表获取列表信息，两个都不传或两个都传代表获取歌曲信息
+		 * @returns {object}
+		 */
+		getInfo: function (list,song) {
+			var $this = this;
+			list = list !== undefined ? list : $this.getCurrentList();
+			song = song !== undefined ? song : $this.getCurrentSong();
+			return $this.list[list][song];
+		},
+		/**
+		 * 通过传入的时间返回指定时间的歌词
+		 * @param time {number} 可选，不传代表当前时间，单位秒
+		 * @param info {boolean} 可选，默认true，将返回歌词字符串，填false返回歌词开始时间（单位：毫秒）
+		 */
+		getLrc: function (time,info) {
+			var $this = this;
+			info = info !== undefined ? info : true;
+			time = time !== undefined ? time * 1000 : $this.getCurrentTime() * 1000;
+			var lrcList = $this.getCurrentSong(true)['lrc'];
+			var lrc,lastIndex = 0;
+			$.each(lrcList, function (index) {
+				if (time < index) {
+					return false;
+				}
+				lastIndex = index;
+			});
+			lrc = lastIndex;
+			return info ? $this.getCurrentSong(true).lrc[lrc] : lrc;
+		},
+		/**
+		 * 更换显示的列表
+		 * @param list {number} 列表id
+		 */
+		changeList: function (list) {
+			var $this = this;
+			// 设置列表活动类
+			$this.dom.listTitle.find('.mp-list-title-current').removeClass('mp-list-title-current');
+			$this.dom.listTitle.find('.mp-list-title-'+list).addClass('mp-list-title-current');
+			// 切换audio标签的显示列表
+			$this.audio.attr('data-displayList',list);
+			// 清除播放列表
+			$this.dom.list.html('');
+			// 获取列表模板
+			var format = $this.settings.listFormat;
+			// 匹配正则
+			var reg = /\$\{(\w+)}\$/g;
+			for (var i = 0; i < $this.list[list].length;i++) {
+				var content = format;
+				while (true) {
+					var result = reg.exec(format);
+					if (!result) {
+						break;
+					}
+					// 替换模板里的${}$为实际数据
+					content = content.replace(result[0],$this.list[list][i][result[1]] || '-');
+				}
+				// 输出列表
+				$this.dom.list.append(content);
+			}
+			// 为列表当前播放歌曲添加样式
+			if (list == $this.getCurrentList()) {
+				$this._setCurrent($this.getCurrentSong());
+			}
+		},
+		/**
+		 * 更换播放模式
+		 * @param mode {number}
+		 */
+		changePlayMode: function (mode) {
+			var $this = this;
+			mode = Math.max(Math.min(parseInt(mode),3),0);
+			$this.audio.attr('data-playMode',mode);
+			$this._trigger('changeMode');
+		},
+		/**
+		 * 获取播放模式(0->顺序播放 1->列表循环 2->单曲循环 3->随机播放)
+		 * @returns {number}
+		 */
+		getPlayMode: function () {
+			return parseInt(this.audio.attr('data-playMode'));
+		},
+		/**
+		 * 获取是否静音
+		 * @returns {boolean}
+		 */
+		getIsMuted: function () {
+			return this.audio.prop('muted');
+		},
+		/**
+		 * 静音，如果已静音就什么都不做
+		 */
+		mute: function () {
+			var $this = this;
+			$this.dom.vol.addClass('mp-mute');
+			$this.audio.prop('muted',true);
+			$this._trigger('mute');
+		},
+		/**
+		 * 取消静音，如果没有静音就什么都不做
+		 */
+		cancelMute: function () {
+			var $this = this;
+			$this.audio.prop('muted',false);
+			$this.dom.vol.removeClass('mp-mute');
+			$this._trigger('mute');
+		},
+		/**
+		 * 切换静音状态
+		 */
+		toggleMute: function () {
+			var $this = this;
+			if ($this.getIsMuted()) {
+				$this.cancelMute();
+			} else {
+				$this.mute();
+			}
+		},
+		/**
+		 * 绑定事件
+		 * @param name string
+		 * @param fun function
+		 * @returns {MPlayer}
+		 */
+		on: function (name,fun) {
+			var $this = this;
+			$this.callbacks[name] = fun;
+			return $this;
+		},
+		/**
+		 * 解除事件绑定
+		 * @param name
+		 * @returns {MPlayer}
+		 */
+		unBindEvent: function (name) {
+			var $this = this;
+			$this.callbacks[name] = null;
+			return $this;
 		}
-		var timeArr = [];
-		// 将歌词输入到歌词框
-		$this.doms.lrc.html('');
-		for (var ctime in lrcObj) {
-			$this.doms.lrc.append($('<li>').html(lrcObj[ctime] || " ").addClass('mp-lrc').attr('id', 'mp-lrc-'+ctime));
-			timeArr.push(parseInt(ctime));
-		}
-		$this.doms.lrc.children().eq(0).addClass('mp-lrc-current');
-		$this.audiodom.prop('timeArr', timeArr);
-	};
-
-	// 上一曲
-	MPlayer.prototype.prev = function (l,s) {
-		$this = this;
-		s--;
-		if (s < 0) {
-			s = $this.songArr[l].length-1;
-		}
-		$this.play(l,s);
-	};
-	// 下一曲
-	MPlayer.prototype.next = function (l,s) {
-		$this = this;
-		s++;
-		if (s >= $this.songArr[l].length) {
-			s = 0;
-		}
-		$this.play(l,s);
-	};
-	// 随机播放
-	MPlayer.prototype.rand = function (l,s) {
-		$this = this;
-		var ss = s;
-		do{
-			s = $this.tools.rand($this.songArr[l].length-1);
-		} while (s === ss);
-		
-		$this.play(l,s);
-	};
-	// 单曲循环
-	MPlayer.prototype.repeat = function (l,s) {
-		$this = this;
-		$this.play(l,s);
-	};
-	// 正常下一首
-	MPlayer.prototype.toNext = function () {
-		$this = this;
-		var mode = parseInt($this.audiodom.attr('data-playmode'));
-		var s = parseInt($this.audiodom.attr('data-currentsong'));
-		var l = parseInt($this.audiodom.attr('data-currentlist'));
-		switch (mode) {
-			case 1:
-				$this.repeat(l,s);
-				break;
-			case 2:
-				$this.rand(l,s);
-				break;
-			default:
-				$this.next(l,s);
-				break;
-		}
-	};
-	window.MPlayer = MPlayer;
-})(jQuery);
-
+	});
+	return MPlayer;
+}());

@@ -1,347 +1,442 @@
-@font-face {
-  font-family: 'mp-icon';
-  src: url('mplayer.eot?#iefix');
-  src: url('mplayer.eot') format('embedded-opentype'), url('mplayer.ttf') format('truetype'), url('mplayer.woff') format('woff'), url('mplayer.svg') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-/* line 20, mplayer.less */
-.mp-icon {
-  font-family: "mp-icon" !important;
+/**
+ * @authors 0936zz (zz5840@qq.com)
+ * @date    2016-08-06 23:54
+ */
+/* 去除浏览器默认样式 && 避免Bootstrap等框架破坏布局 */
+/* line 14, mplayer.less */
+.mp * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Microsoft YaHei", serif;
 }
 /* line 23, mplayer.less */
-.mp-disabled {
-  cursor: disabled;
+.mp img {
+  border: none;
 }
 /* line 26, mplayer.less */
-.mp {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  position: relative;
-  overflow: hidden;
-}
-/* line 32, mplayer.less */
-.mp a {
-  text-decoration: none;
-  color: #7fb80e;
-}
-/* line 36, mplayer.less */
-.mp * {
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-}
-/* line 44, mplayer.less */
-.mp-playbox {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 600px;
-  height: 160px;
-}
-/* line 51, mplayer.less */
-.mp-cover {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  width: 120px;
-  height: 120px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  -o-border-radius: 50%;
-  border-radius: 50%;
-  overflow: hidden;
-}
-/* line 63, mplayer.less */
-.mp-cover img {
-  width: 100%;
-  height: 100%;
-}
-/* line 68, mplayer.less */
-.mp-playing-name {
-  position: absolute;
-  top: 35px;
-  left: 160px;
-}
-/* line 72, mplayer.less */
-.mp-playing-name h2 {
-  font-size: 22px;
-  font-weight: bold;
-}
-/* line 76, mplayer.less */
-.mp-playing-name small {
-  font-weight: normal;
-  font-size: 16px;
-}
-/* line 79, mplayer.less */
-.mp-playing-name small:before {
-  content: " - ";
-}
-/* line 84, mplayer.less */
-.mp-menu-switch {
-  position: absolute;
-  top: 82px;
-  right: 20px;
-}
-/* line 89, mplayer.less */
-.mp-progress {
-  position: absolute;
-  left: 160px;
-  top: 70px;
-  width: 70%;
-}
-/* line 95, mplayer.less */
-.mp-progress-total {
-  border: 1px solid #7fb80e;
-  height: 3px;
-  cursor: pointer;
-}
-/* line 100, mplayer.less */
-.mp-progress-current {
-  background-color: #7fb80e;
-  height: 3px;
-  width: 0;
-}
-/* line 105, mplayer.less */
-.mp-progress-time {
-  position: absolute;
-  right: 0;
-  top: -28px;
-  color: #666;
-}
-/* line 112, mplayer.less */
-.mp-hover:hover,
-.mp-deep {
-  color: #3e5907 !important;
-}
-@keyframes mp-rotate {
-  /* line 118, mplayer.less */
-  from {
-    -webkit-transform: rotate(0);
-    -moz-transform: rotate(0);
-    -ms-transform: rotate(0);
-    -o-transform: rotate(0);
-    transform: rotate(0);
-  }
-  /* line 125, mplayer.less */
-  to {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-/* line 134, mplayer.less */
-.mp-cover-animate {
-  -webkit-animation: mp-rotate 10s linear infinite;
-  -o-animation: mp-rotate 10s linear infinite;
-  animation: mp-rotate 10s linear infinite;
-}
-/* line 140, mplayer.less */
-.mp-modebox {
-  position: absolute;
-  top: 82px;
-  right: 47px;
-}
-/* line 145, mplayer.less */
-.mp-mode-button,
-.mp-menu-switch {
-  font-family: "mp-icon" !important;
-  color: #7fb80e;
-  font-size: 20px;
-}
-/* line 150, mplayer.less */
-.mp-volbox {
-  position: absolute;
-  top: 110px;
-  right: 20px;
-}
-/* line 155, mplayer.less */
-.mp-vol-mute {
-  color: #7fb80e;
-}
-/* line 158, mplayer.less */
-.mp-vol-range {
-  width: 100px;
-  height: 3px;
-  background-color: #7fb80e;
-  position: relative;
-  top: -5px;
-  margin-left: 5px;
-  -webkit-appearance: none;
+.mp input {
   outline: none;
 }
-/* line 167, mplayer.less */
-.mp-vol-range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  cursor: pointer;
-  width: 10px;
-  height: 10px;
-  background-color: #fff;
-  border: 1px solid #7fb80e;
-  border-radius: 50%;
-}
-/* line 177, mplayer.less */
-.mp-buttonbox {
-  position: absolute;
-  top: 80px;
-  left: 200px;
-}
-/* line 182, mplayer.less */
-.mp-button {
-  font-family: "mp-icon" !important;
-  color: #7fb80e;
-  font-size: 35px;
-  margin-right: 20px;
-}
-/* line 188, mplayer.less */
-.mp-button-play {
-  font-size: 50px;
-  position: relative;
-  top: 6px;
-}
-/* line 195, mplayer.less */
-.mp-lrc-box {
-  width: 600px;
-  overflow-y: auto;
-}
-/* line 199, mplayer.less */
-.mp-lrc {
-  font-size: 16px;
-  line-height: 2;
-  text-align: center;
-  width: 80%;
-  margin: 0 auto;
-  color: #666;
-  cursor: default;
-  -webkit-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  -ms-transition: all 0.5s;
-  -o-transition: all 0.5s;
-  transition: all 0.5s;
-}
-/* line 209, mplayer.less */
-.mp-lrc-current {
-  color: #7fb80e;
-  font-size: 20px;
-}
-/* line 215, mplayer.less */
-.mp-lrc-box::-webkit-scrollbar,
-.mp-list::-webkit-scrollbar {
-  width: 5px;
-}
-/* line 218, mplayer.less */
-.mp-lrc-box::-webkit-scrollbar-track,
-.mp-list::-webkit-scrollbar-track {
-  background-color: #BBB;
-  border-radius: 3px;
-}
-/* line 222, mplayer.less */
-.mp-lrc-box::-webkit-scrollbar-thumb,
-.mp-list::-webkit-scrollbar-thumb {
-  background-color: #7fb80e;
-  border-radius: 3px;
-}
-/* line 228, mplayer.less */
-.mp-listbox {
-  position: absolute;
-  right: 20px;
-  bottom: 80px;
-  width: 0;
-  height: 0;
-  opacity: 0;
-  -webkit-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  -ms-transition: all 0.5s;
-  -o-transition: all 0.5s;
-  transition: all 0.5s;
-  background-color: rgba(0, 0, 0, 0.6);
-  overflow: hidden;
-}
-/* line 241, mplayer.less */
-.mp-list-on .mp-menu-switch {
-  color: #3e5907 !important;
-}
-/* line 244, mplayer.less */
-.mp-list-on .mp-listbox {
-  width: 400px;
-  opacity: 1;
-}
-/* line 250, mplayer.less */
-.mp-list-title {
-  width: 100%;
-  background-color: #7fb80e;
+/* line 29, mplayer.less */
+.mp a {
+  text-decoration: none;
+  display: inline-block;
   color: #FFF;
-  height: 40px;
-  line-height: 40px;
-  text-indent: 20px;
-  font-weight: normal;
+}
+/* line 34, mplayer.less */
+.mp p {
+  color: #FFF;
+}
+/* line 37, mplayer.less */
+.mp ul {
+  list-style-type: none;
+}
+/* line 40, mplayer.less */
+.mp button {
+  border: none;
+  outline: none;
   cursor: pointer;
-  letter-spacing: 2px;
+  background-color: transparent;
 }
-/* line 261, mplayer.less */
-.mp-list {
-  overflow: auto;
-  padding-bottom: 5px;
+/* line 47, mplayer.less */
+.mp {
+  width: 599px;
+  height: 120px;
+  position: fixed;
+  bottom: 20px;
+  left: -574px;
+  border-radius: 0 5px 5px 0;
+  background-color: #212121;
+  -webkit-transition: left .5s;
+  -moz-transition: left .5s;
+  -o-transition: left .5s;
+  transition: left .5s;
 }
-/* line 266, mplayer.less */
-.mp-list-select-ul {
-  width: 398px;
-  background-color: #fff;
-  border: 1px solid #7fb80e;
-  z-index: 5;
-  display: none;
-  overflow: hidden;
-  position: absolute;
-  top: 40px;
+/* line 59, mplayer.less */
+.mp.mp-show {
   left: 0;
 }
-/* line 276, mplayer.less */
-.mp-list-select-ul li {
+/* line 61, mplayer.less */
+.mp.mp-show .mp-toggle-img {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+/* line 69, mplayer.less */
+.mp .mp-cover {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+/* line 76, mplayer.less */
+.mp .mp-info {
+  position: absolute;
+  left: 120px;
+  top: 15px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+/* line 83, mplayer.less */
+.mp .mp-lrc-box {
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 600px;
+  background-color: #212121;
+  border-radius: 0 5px 5px 0;
+  overflow: hidden;
+  opacity: 0;
+  -webkit-transition: opacity .5s;
+  -moz-transition: opacity .5s;
+  -o-transition: opacity .5s;
+  transition: opacity .5s;
+}
+/* line 96, mplayer.less */
+.mp .mp-lrc-box.mp-lrc-show {
+  opacity: 1;
+}
+/* line 98, mplayer.less */
+.mp .mp-lrc-box.mp-lrc-show ~ .mp-lrc-close {
+  opacity: 1;
+}
+/* line 103, mplayer.less */
+.mp .mp-lrc {
+  width: 200px;
+  height: 100px;
+  font-size: 12px;
+  overflow: hidden;
+  color: #FFF;
+  text-align: center;
   line-height: 2;
-  text-indent: 20px;
+}
+/* line 112, mplayer.less */
+.mp .mp-lrc-current {
+  color: #d32f2f;
+}
+/* line 115, mplayer.less */
+.mp .mp-lrc-close {
+  width: 7px;
+  height: 7px;
+  background: url("../img/mplayer_bg.png") no-repeat 0 -56px;
+  position: absolute;
+  top: 7px;
+  right: -215px;
+  opacity: 0;
+  -webkit-transition: opacity .5s;
+  -moz-transition: opacity .5s;
+  -o-transition: opacity .5s;
+  transition: opacity .5s;
+}
+/* line 127, mplayer.less */
+.mp .mp-lrc-close:hover {
+  background-position-x: -7px;
+}
+/* line 131, mplayer.less */
+.mp .mp-menu {
+  position: absolute;
+  left: 510px;
+  top: 10px;
+}
+/* line 136, mplayer.less */
+.mp .mp-list-toggle {
+  width: 21px;
+  height: 14px;
+  background: url("../img/mplayer_bg.png") no-repeat -29px -90px;
+  float: left;
+}
+/* line 141, mplayer.less */
+.mp .mp-list-toggle:hover {
+  background-position-x: -50px;
+}
+/* line 145, mplayer.less */
+.mp .mp-lrc-toggle {
+  width: 14px;
+  height: 14px;
+  background: url("../img/mplayer_bg.png") no-repeat -29px -56px;
+  float: left;
+  margin-left: 15px;
+}
+/* line 151, mplayer.less */
+.mp .mp-lrc-toggle:hover {
+  background-position-y: -70px;
+}
+/* line 155, mplayer.less */
+.mp .mp-pro {
+  width: 440px;
+  height: 5px;
+  border: 1px solid #d32f2f;
+  position: absolute;
+  bottom: 15px;
+  left: 120px;
   cursor: pointer;
+}
+/* line 164, mplayer.less */
+.mp .mp-pro-current {
+  width: 0;
+  height: 100%;
+  background-color: #d32f2f;
+}
+/* line 169, mplayer.less */
+.mp .mp-btn {
+  position: absolute;
+  top: 36px;
+  left: 230px;
+  height: 45px;
+}
+/* line 175, mplayer.less */
+.mp .mp-prev,
+.mp .mp-next {
+  width: 24px;
+  height: 28px;
+  background: url("../img/mplayer_bg.png") no-repeat;
+  float: left;
+  margin-top: 8.5px;
+}
+/* line 181, mplayer.less */
+.mp .mp-prev:hover,
+.mp .mp-next:hover {
+  background-position-y: -28px;
+}
+/* line 185, mplayer.less */
+.mp .mp-prev {
+  background-position: 0 0;
+  margin-right: 30px;
+}
+/* line 189, mplayer.less */
+.mp .mp-next {
+  background-position: -24px 0;
+  margin-right: 20px;
+}
+/* line 193, mplayer.less */
+.mp .mp-pause {
+  width: 38px;
+  height: 45px;
+  margin-right: 30px;
+  float: left;
+  background: url("../img/mplayer_bg.png") no-repeat -86px 0;
+}
+/* line 199, mplayer.less */
+.mp .mp-pause:hover {
+  background-position-y: -45px;
+}
+/* line 203, mplayer.less */
+.mp .mp-play {
+  background-position: -48px 0;
+}
+/* line 206, mplayer.less */
+.mp .mp-mode {
+  width: 26px;
+  height: 21px;
+  background: url("../img/mplayer_bg.png") no-repeat 0 -105px;
+  margin-right: 20px;
+  float: left;
+  margin-top: 12px;
+}
+/* line 213, mplayer.less */
+.mp .mp-mode:hover {
+  background-position-y: -126px;
+}
+/* line 217, mplayer.less */
+.mp .mp-mode-0 {
+  background-position-x: 0;
+}
+/* line 220, mplayer.less */
+.mp .mp-mode-1 {
+  background-position-x: -26px;
+}
+/* line 223, mplayer.less */
+.mp .mp-mode-2 {
+  background-position-x: -52px;
+}
+/* line 226, mplayer.less */
+.mp .mp-mode-3 {
+  background-position-x: -78px;
+}
+/* line 229, mplayer.less */
+.mp .mp-vol {
+  display: inline-block;
+  float: left;
+}
+/* line 233, mplayer.less */
+.mp .mp-vol-img {
+  width: 29px;
+  height: 21px;
+  background: url("../img/mplayer_bg.png") no-repeat 0 -63px;
+  margin-top: 12px;
+  float: left;
+}
+/* line 239, mplayer.less */
+.mp .mp-vol-img:hover {
+  background-position-y: -84px;
+}
+/* line 243, mplayer.less */
+.mp .mp-mute {
+  background-position: -120px -126px;
+}
+/* line 245, mplayer.less */
+.mp .mp-mute:hover {
+  background-position: -149px -126px;
+}
+/* line 249, mplayer.less */
+.mp .mp-vol-range {
+  width: 70px;
+  height: 5px;
+  background: #FFF;
+  display: inline-block;
+  float: left;
+  position: relative;
+  margin: 20px 0 0 8px;
+}
+/* line 258, mplayer.less */
+.mp .mp-vol-current {
+  width: 0;
+  height: 100%;
+  background: #d32f2f;
+}
+/* line 263, mplayer.less */
+.mp .mp-vol-circle {
+  width: 9px;
+  height: 9px;
+  position: absolute;
+  top: -2px;
+  border-radius: 5px;
+  background: #d32f2f;
+  cursor: pointer;
+}
+/* line 271, mplayer.less */
+.mp .mp-vol-circle:hover {
+  background-color: #f44336;
+}
+/* line 274, mplayer.less */
+.mp .mp-vol-circle.mp-disabled {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
 }
 /* line 280, mplayer.less */
-.mp-list-select-ul li:hover {
-  background-color: rgba(127, 184, 14, 0.3);
+.mp .mp-vol-circle.mp-disabled:hover {
+  background-color: #d32f2f;
 }
-/* line 286, mplayer.less */
-.mp-list-select-on .mp-list-select-ul {
-  display: block;
-}
-/* line 290, mplayer.less */
-.mp-list-song-current {
-  background-color: #fff;
-  cursor: default;
-  position: relative;
-  color: #7fb80e !important;
-}
-/* line 295, mplayer.less */
-.mp-list-song-current:before {
+/* line 285, mplayer.less */
+.mp .mp-toggle {
   position: absolute;
-  right: 10px;
-  content: '\e900';
-  font-family: "mp-icon" !important;
-  color: #7fb80e;
-  font-size: 16px;
-  line-height: 30px;
+  right: 0;
+  top: 0;
+  height: 120px;
+  width: 25px;
+  background: url("../img/mplayer_bg.png") no-repeat -124px 0;
 }
-/* line 307, mplayer.less */
-.mp-list-song {
-  line-height: 30px;
-  font-size: 16px;
-  cursor: pointer;
-  text-indent: 20px;
+/* line 292, mplayer.less */
+.mp .mp-toggle:hover {
+  background-position-x: -149px;
+}
+/* line 296, mplayer.less */
+.mp .mp-toggle-img {
+  width: 12px;
+  height: 21px;
+  display: inline-block;
+  background: url("../img/mplayer_bg.png") no-repeat -104px -126px;
+  position: absolute;
+  top: 50px;
+  left: 6px;
+  -webkit-transition: -webkit-transform 0.5s;
+  -moz-transition: -moz-transform 0.5s;
+  -o-transition: -o-transform 0.5s;
+  transition: transform .5s;
+}
+/* line 309, mplayer.less */
+.mp .mp-list-box {
+  position: absolute;
+  bottom: 120px;
+  left: 0;
+  width: 574px;
+  height: 0;
+  overflow: hidden;
+  background-color: #212121;
+  -webkit-transition: height .5s;
+  -moz-transition: height .5s;
+  -o-transition: height .5s;
+  transition: height .5s;
+}
+/* line 321, mplayer.less */
+.mp .mp-list-box.mp-list-show {
+  height: 400px;
+}
+/* line 325, mplayer.less */
+.mp .mp-list-title {
+  height: 40px;
+  font-size: 18px;
   color: #FFF;
+  line-height: 40px;
+  width: 100%;
+  background: #212121;
 }
-/* line 313, mplayer.less */
-.mp-list-song:hover {
-  background-color: #fff;
-  color: #000;
+/* line 332, mplayer.less */
+.mp .mp-list-title li {
+  float: left;
+  padding: 0 20px;
+  cursor: pointer;
 }
+/* line 338, mplayer.less */
+.mp .mp-list-title-current {
+  background: #727272;
+  position: relative;
+}
+/* line 341, mplayer.less */
+.mp .mp-list-title-current:before {
+  content: "";
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 6px dashed transparent;
+  border-top: 6px solid #727272;
+  margin-left: -6px;
+}
+/* line 353, mplayer.less */
+.mp .mp-list-table {
+  max-height: 340px;
+  width: 100%;
+  border-collapse: collapse;
+  border: none;
+  margin: 10px 0;
+  overflow: auto;
+}
+/* line 360, mplayer.less */
+.mp .mp-list-table th {
+  font-weight: normal;
+  text-align: left;
+}
+/* line 364, mplayer.less */
+.mp .mp-list-table th,
+.mp .mp-list-table td {
+  text-indent: 10px;
+}
+/* line 367, mplayer.less */
+.mp .mp-list-table tr {
+  height: 20px;
+  font-size: 14px;
+  color: #FFF;
+  line-height: 2;
+  padding: 0 10px;
+}
+/* line 375, mplayer.less */
+.mp .mp-list-table tbody tr {
+  cursor: pointer;
+}
+/* line 377, mplayer.less */
+.mp .mp-list-table tbody tr.mp-list-current,
+.mp .mp-list-table tbody tr:hover {
+  background: #727272;
+}
+/*# sourceMappingURL=mplayer.css.map */

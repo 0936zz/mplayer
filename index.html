@@ -2,89 +2,136 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>mPlayer音乐播放器</title>
-	<link rel="stylesheet" type="text/css" href="css/mplayer.css">
+	<title>MPlayer音乐播放器</title>
+	<link rel="stylesheet" href="css/mplayer.css">
 	<style>
-		html, body, div, span, applet, object, iframe,
-		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-		a, abbr, acronym, address, big, cite, code,
-		del, dfn, em, img, ins, kbd, q, s, samp,
-		small, strike, strong, sub, sup, tt, var,
-		b, u, i, center,
-		dl, dt, dd, ol, ul, li,
-		fieldset, form, label, legend,
-		table, caption, tbody, tfoot, thead, tr, th, td,
-		article, aside, canvas, details, embed, 
-		figure, figcaption, footer, header, hgroup, 
-		menu, nav, output, ruby, section, summary,
-		time, mark, audio, video {
-			margin: 0;
-			padding: 0;
-			border: 0;
-			font-size: 100%;
-			font: inherit;
-			vertical-align: baseline;
+		.info {
 			font-family: "Microsoft Yahei";
+			text-align: center;
 		}
-		/* HTML5 display-role reset for older browsers */
-		article, aside, details, figcaption, figure, 
-		footer, header, hgroup, menu, nav, section {
-			display: block;
-		}
-		body {
-			line-height: 1;
-		}
-		ol, ul {
-			list-style: none;
-		}
-		blockquote, q {
-			quotes: none;
-		}
-		blockquote:before, blockquote:after,
-		q:before, q:after {
-			content: '';
-			content: none;
-		}
-		table {
-			border-collapse: collapse;
-			border-spacing: 0;
+		.info h1 {
+			font-weight: 400;
 		}
 	</style>
 </head>
 <body>
-<div class="container"></div>
-<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-<script src="js/mplayer.min.js" type="text/javascript"></script>
-<script src="js/mplayer-list.js" type="text/javascript"></script>
+<div class="info">
+	<h1>MPlayer音乐播放器演示页面</h1>
+	<p>请按F12打开控制台查看回调事件效果</p>
+</div>
+<div class="mp">
+	<div class="mp-box">
+		<img src="img/mplayer_error.png" alt="music cover" class="mp-cover">
+		<div class="mp-info">
+			<p class="mp-name">燕归巢</p>
+			<p class="mp-singer">许嵩</p>
+			<p><span class="mp-time-current">00:00</span>/<span class="mp-time-all">00:00</span></p>
+		</div>
+		<div class="mp-btn">
+			<button class="mp-prev" title="上一首"></button>
+			<button class="mp-pause" title="播放"></button>
+			<button class="mp-next" title="下一首"></button>
+			<button class="mp-mode" title="播放模式"></button>
+			<div class="mp-vol">
+				<button class="mp-vol-img" title="静音"></button>
+				<div class="mp-vol-range" data-range_min="0" data-range_max="100" data-cur_min="80">
+					<div class="mp-vol-current"></div>
+					<div class="mp-vol-circle"></div>
+				</div>
+			</div>
+		</div>
+		<div class="mp-pro">
+			<div class="mp-pro-current"></div>
+		</div>
+		<div class="mp-menu">
+			<button class="mp-list-toggle"></button>
+			<button class="mp-lrc-toggle"></button>
+		</div>
+	</div>
+	<button class="mp-toggle">
+		<span class="mp-toggle-img"></span>
+	</button>
+	<div class="mp-lrc-box">
+		<ul class="mp-lrc"></ul>
+	</div>
+	<button class="mp-lrc-close"></button>
+	<div class="mp-list-box">
+		<ul class="mp-list-title"></ul>
+		<table class="mp-list-table">
+			<thead>
+				<tr>
+					<th>歌名</th>
+					<th>歌手</th>
+					<th>时长</th>
+				</tr>
+			</thead>
+			<tbody class="mp-list"></tbody>
+		</table>
+	</div>
+</div>
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/mplayer.js"></script>
+<script src="js/mplayer-list.js"></script>
+<script src="js/mplayer-functions.js"></script>
+<script src="//cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
 <script>
-var mplayer = new MPlayer({
-	// 播放器容器(jQuery选择器)
-	containerSelector:'.container',
-	// 歌曲列表
-	songList:mplayer_song,
-	// 播放模式(0->列表循环,1->单曲循环,2->随机,可选,默认为0)
+var modeText = ['顺序播放','单曲循环','随机播放','列表循环'];
+var player = new MPlayer({
+	// 容器选择器名称
+	containerSelector: '.mp',
+	// 播放列表
+	songList: mplayer_song,
+	// 专辑图片错误时显示的图片
+	defaultImg: 'img/mplayer_error.png',
+	// 自动播放
+	autoPlay: true,
+	// 播放模式(0->顺序播放,1->单曲循环,2->随机播放,3->列表循环(默认))
 	playMode:0,
-	// 第一首播放的歌的列表(可选,默认为0)
 	playList:0,
-	// 第一首播放的歌在列表中的的索引(不算basic,可选,默认为0)
-	playSong:1,
-	// 是否自动播放，默认true
-	autoPlay:true,
-	// 播放时专辑图片是否旋转
-	playRotate:true,
-	// 使用默认主题(默认为true,若您使用了自定义主题,请务必将此项修改为false,否则您的布局可能会被破坏)
-	useDefaultStyle:true,
-	// 歌词区域的高度(默认160,单位px,useDefaultStyle为false时本配置无作用)
-	lrcHeight:160,
-	// 每首歌播放开始前的回调函数,接受一个参数作为歌曲信息
-	beforePlay:function (data) {
-		console.log(data);
-	},
-	// 歌曲缓冲到可以播放时的回调函数(调整时间时同样会触发)
-	canPlay:function (data) {
-		console.log(data);
-	}
+	playSong:0,
+	// 当前歌词距离顶部的距离
+	lrcTopPos: 34,
+	// 列表模板，用${变量名}$插入模板变量
+	listFormat: '<tr><td>${name}$</td><td>${singer}$</td><td>${time}$</td></tr>',
+	// 音量滑块改变事件名称
+	volSlideEventName:'change',
+	// 初始音量
+	defaultVolume:80
+}, function () {
+	// 绑定事件
+	this.on('afterInit', function () {
+		console.log('播放器初始化完成，正在准备播放');
+	}).on('beforePlay', function () {
+		var $this = this;
+		var song = $this.getCurrentSong(true);
+		var songName = song.name + ' - ' + song.singer;
+		console.log('即将播放'+songName+'，return false;可以取消播放');
+	}).on('timeUpdate', function () {
+		var $this = this;
+		console.log('当前歌词：' + $this.getLrc());
+	}).on('end', function () {
+		var $this = this;
+		var song = $this.getCurrentSong(true);
+		var songName = song.name + ' - ' + song.singer;
+		console.log(songName+'播放完毕，return false;可以取消播放下一曲');
+	}).on('mute', function () {
+		var status = this.getIsMuted() ? '已静音' : '未静音';
+		console.log('当前静音状态：' + status);
+	}).on('changeMode', function () {
+		var $this = this;
+		var mode = modeText[$this.getPlayMode()];
+		$this.dom.container.find('.mp-mode').attr('title',mode);
+		console.log('播放模式已切换为：' + mode);
+	});
 });
+
+
+$(document.body).append(player.audio); // 测试用
+
+setEffects(player);
+
+
 </script>
 </body>
 </html>
