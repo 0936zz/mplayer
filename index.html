@@ -4,13 +4,16 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-<title>主页 - mPlayer音乐播放器</title>
+<title>主页 - MPlayer音乐播放器</title>
 <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
-<link rel="stylesheet" href="static/style.css">
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/prism.css">
+<link rel="stylesheet" href="static/css/mplayer.min.css">
+<link rel="shortcut icon" href="favicon.ico">
 </head>
-<body>
-<nav class="navbar navbar-default">
+<body class="fixed-nav">
+<nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapse">
@@ -18,21 +21,20 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="./index.html">mPlayer音乐播放器</a>
+			<a class="navbar-brand" href="index.html"><img src="static/img/logo_w.png" alt="logo" class="logo-img"></a>
 		</div>
 		<div class="collapse navbar-collapse" id="collapse">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="./index.html">首页</a></li>
-				<li><a href="./download.html">下载</a></li>
-				<li><a href="./demo.html" target="_blank">演示</a></li>
+				<li class="active"><a href="index.html">首页</a></li>
+				<li><a href="download.html">下载</a></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">文档 <span class="caret"></span></a>
+					<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">文档 <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="./documentation.html">全部</a></li>
+						<li><a href="documentation.html">全部</a></li>
 						<li class="divider"></li>
-						<li><a href="./documentation.html#introduce">介绍</a></li>
-						<li><a href="./documentation.html#start">开始使用</a></li>
-						<li><a href="./documentation.html#diy">自定义</a></li>
+						<li><a href="documentation.html#introduce">介绍</a></li>
+						<li><a href="documentation.html#start">开始使用</a></li>
+						<li><a href="documentation.html#diy">自定义</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -44,39 +46,39 @@
 </nav>
 <div class="jumbotron">
 	<div class="container">
-		<h1>mPlayer音乐播放器</h1>
+		<h1>MPlayer音乐播放器</h1>
 		<p>高度可定制的Web音乐播放器</p>
 		<p class="btn-group hidden-xs">
-			<a class="btn btn-primary btn-lg" href="./demo.html" target="_blank"><span class="fa fa-book fa-lg"></span> 查看Demo</a>
-			<a class="btn btn-primary btn-lg" href="./download.html"><span class="fa fa-download fa-lg"></span> 下载</a>
+			<a class="btn btn-primary btn-lg" href="http://github.com/0936zz/mplayer" target="_blank"><span class="fa fa-github fa-lg"></span> View On Github</a>
+			<a class="btn btn-primary btn-lg" href="download.html"><span class="fa fa-download fa-lg"></span> 下载</a>
 		</p>
 		<p class="btn-group visible-xs">
-			<a class="btn btn-primary" href="./demo.html" target="_blank"><span class="fa fa-book fa-lg"></span> Demo</a>
-			<a class="btn btn-primary" href="./download.html"><span class="fa fa-download fa-lg"></span> 下载</a>
+			<a class="btn btn-primary" href="http://github.com/0936zz/mplayer" target="_blank"><span class="fa fa-github"></span> Github</a>
+			<a class="btn btn-primary" href="download.html"><span class="fa fa-download fa-lg"></span> 下载</a>
 		</p>
 	</div>
 </div>
-<div class="container">
+<div class="container" id="con">
 	<div class="row text-center">
 		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<img src="static/lrc.png" alt="describe image" class="desc img-responsive">
+			<img src="static/img/lrc.png" alt="describe image" class="desc img-responsive">
 			<h3>LRC歌词</h3>
-			<p>您只需将lrc歌词复制到指定的地方即可享受实时歌词显示功能</p>
+			<p>歌词实时同步，麻麻再也不怕我听不懂歌词了</p>
 		</div>
 		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<img src="static/list.png" alt="describe image" class="desc img-responsive">
+			<img src="static/img/list.png" alt="describe image" class="desc img-responsive">
 			<h3>多列表功能</h3>
-			<p>多个列表想换就换，想听哪个就听哪个，多列表就是这么任性！</p>
+			<p>多个列表随心换，想听哪个就听哪个，就这么任性！</p>
 		</div>
 		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<img src="static/mode.png" alt="describe image" class="desc img-responsive">
+			<img src="static/img/mode.png" alt="describe image" class="desc img-responsive">
 			<h3>多种播放模式</h3>
-			<p>随机、列表、单曲三种播放模式随心切换，最接近客户端的体验！</p>
+			<p>随机、列表、循环、单曲四种播放模式随心切换，最接近客户端的体验！</p>
 		</div>
 		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
-			<img src="static/style.png" alt="describe image" class="desc img-responsive">
+			<img src="static/img/style.png" alt="describe image" class="desc img-responsive">
 			<h3>样式自定义</h3>
-			<p>通过<a href="./documentation.html#diy">文档</a>中的提示，您只需要写很少的CSS就可以轻松定制一份属于您自己的mPlayer播放器</p>
+			<p>这可能是最方便二次开发的音乐播放器插件了。</p>
 		</div>
 	</div>
 	<h2>未来可能会添加的功能</h2>
@@ -84,27 +86,30 @@
 		<table class="table table-hover table-striped">
 			<tr>
 				<th>功能</th>
-				<th>期待率</th>
 				<th>状态</th>
 			</tr>
 			<tr>
-				<td>兼容IE8</td>
-				<td>0%</td>
+				<td>AJAX获取歌词</td>
 				<td>制作中</td>
 			</tr>
 			<tr>
-				<td>移动端优化</td>
-				<td>0%</td>
+				<td>播放记忆</td>
+				<td>制作中</td>
+			</tr>
+			<tr>
+				<td>悬浮歌词</td>
 				<td>未开工</td>
 			</tr>
 			<tr>
 				<td>快捷键绑定</td>
-				<td>0%</td>
 				<td>未开工</td>
 			</tr>
 			<tr>
-				<td>悬浮歌词</td>
-				<td>0%</td>
+				<td>移动端优化</td>
+				<td>未开工</td>
+			</tr>
+			<tr>
+				<td>兼容低版本IE</td>
 				<td>未开工</td>
 			</tr>
 		</table>
@@ -124,7 +129,62 @@
 		</div>
 	</div>
 </footer>
-<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<div class="mp">
+	<div class="mp-box">
+		<img src="static/img/mplayer_error.png" alt="music cover" class="mp-cover">
+		<div class="mp-info">
+			<p class="mp-name">燕归巢</p>
+			<p class="mp-singer">许嵩</p>
+			<p><span class="mp-time-current">00:00</span>/<span class="mp-time-all">00:00</span></p>
+		</div>
+		<div class="mp-btn">
+			<button class="mp-prev" title="上一首"></button>
+			<button class="mp-pause" title="播放"></button>
+			<button class="mp-next" title="下一首"></button>
+			<button class="mp-mode" title="播放模式"></button>
+			<div class="mp-vol">
+				<button class="mp-vol-img" title="静音"></button>
+				<div class="mp-vol-range" data-range_min="0" data-range_max="100" data-cur_min="80">
+					<div class="mp-vol-current"></div>
+					<div class="mp-vol-circle"></div>
+				</div>
+			</div>
+		</div>
+		<div class="mp-pro">
+			<div class="mp-pro-current"></div>
+		</div>
+		<div class="mp-menu">
+			<button class="mp-list-toggle"></button>
+			<button class="mp-lrc-toggle"></button>
+		</div>
+	</div>
+	<button class="mp-toggle">
+		<span class="mp-toggle-img"></span>
+	</button>
+	<div class="mp-lrc-box mp-lrc-show">
+		<ul class="mp-lrc"></ul>
+	</div>
+	<button class="mp-lrc-close"></button>
+	<div class="mp-list-box">
+		<ul class="mp-list-title"></ul>
+		<table class="mp-list-table">
+			<thead>
+				<tr>
+					<th>歌名</th>
+					<th>歌手</th>
+					<th>时长</th>
+				</tr>
+			</thead>
+			<tbody class="mp-list"></tbody>
+		</table>
+	</div>
+</div>
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
+<script src="static/js/page.js"></script>
+<script src="static/js/prism.js"></script>
+<script src="static/js/mplayer.min.js"></script>
+<script src="static/js/mplayer-list.js"></script>
 </body>
 </html>

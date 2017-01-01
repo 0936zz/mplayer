@@ -4,13 +4,16 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-<title>下载 - mPlayer音乐播放器</title>
+<title>下载 - MPlayer音乐播放器</title>
 <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
-<link rel="stylesheet" href="static/style.css">
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/prism.css">
+<link rel="stylesheet" href="static/css/mplayer.min.css">
+<link rel="shortcut icon" href="favicon.ico">
 </head>
-<body>
-<nav class="navbar navbar-default">
+<body class="fixed-nav">
+<nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapse">
@@ -18,21 +21,20 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="./index.html">mPlayer音乐播放器</a>
+			<a class="navbar-brand" href="index.html"><img src="static/img/logo_w.png" alt="logo" class="logo-img"></a>
 		</div>
 		<div class="collapse navbar-collapse" id="collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="./index.html">首页</a></li>
-				<li class="active"><a href="./download.html">下载</a></li>
-				<li><a href="./demo.html" target="_blank">演示</a></li>
+				<li><a href="index.html">首页</a></li>
+				<li class="active"><a href="download.html">下载</a></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">文档 <span class="caret"></span></a>
+					<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">文档 <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="./documentation.html">全部</a></li>
+						<li><a href="documentation.html">全部</a></li>
 						<li class="divider"></li>
-						<li><a href="./documentation.html#introduce">介绍</a></li>
-						<li><a href="./documentation.html#start">开始使用</a></li>
-						<li><a href="./documentation.html#diy">自定义</a></li>
+						<li><a href="documentation.html#introduce">介绍</a></li>
+						<li><a href="documentation.html#start">开始使用</a></li>
+						<li><a href="documentation.html#diy">自定义</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -44,43 +46,66 @@
 </nav>
 <div class="jumbotron">
 	<div class="container">
-		<h1>mPlayer音乐播放器</h1>
+		<h1>MPlayer音乐播放器</h1>
 		<p>高度可定制的Web音乐播放器</p>
-		<a class="btn btn-primary btn-lg" href="./demo.html" target="_blank"><span class="fa fa-book fa-lg"></span> 查看Demo</a>
+		<p class="btn-group hidden-xs">
+			<a class="btn btn-primary btn-lg" href="http://github.com/0936zz/mplayer" target="_blank"><span class="fa fa-github fa-lg"></span> View On Github</a>
+		</p>
+		<p class="btn-group visible-xs">
+			<a class="btn btn-primary" href="http://github.com/0936zz/mplayer" target="_blank"><span class="fa fa-github"></span> Github</a>
+		</p>
 	</div>
 </div>
-<div class="container">
-	<p class="pull-left">感谢您选择mPlayer播放器，请根据所需功能选择合适的版本进行下载</p>
+<div class="container" id="con">
+	<p class="pull-left">感谢您选择MPlayer播放器，请根据所需功能选择合适的版本进行下载</p>
 	<p class="pull-right">更多历史版本请访问<a href="https://github.com/0936zz/mplayer">Github</a></p>
 	<div class="table-responsive">
 		<table class="table table-striped table-hover download">
 			<tr>
-				<td width="40" class="text-success">NEW</td>
-				<td>mPlayer1.3.3压缩版</td>
+				<th width="40"></th>
+				<th>版本号</th>
+				<th>版本</th>
+				<th>大小</th>
+				<th>下载</th>
+			</tr>
+			<tr>
+				<td class="text-success">NEW</td>
+				<td>V2.0.0贺新春版</td>
+				<td>压缩版</td>
 				<td>47.3KB</td>
 				<td><a href="https://github.com/0936zz/mplayer/archive/min.zip" target="_blank"><span class="fa fa-download"></span> Download</a></td>
 			</tr>
 			<tr>
-				<td width="40" class="text-success">NEW</td>
-				<td>mPlayer1.3.3开发版</td>
-				<td>58.2KB</td>
-				<td><a href="https://github.com/0936zz/mplayer/archive/develope.zip"><span class="fa fa-download"></span> Download</a></td>
+				<td class="text-success">NEW</td>
+				<td>V2.0.0贺新春版</td>
+				<td>开发版</td>
+				<td>47.3KB</td>
+				<td><a href="https://github.com/0936zz/mplayer/archive/min.zip" target="_blank"><span class="fa fa-download"></span> Download</a></td>
 			</tr>
 			<tr>
-				<td width="40" class="text-success">NEW</td>
-				<td>mPlayer1.3.3完整版（带演示）</td>
-				<td>34.9MB</td>
-				<td><a href="https://github.com/0936zz/mplayer/archive/master.zip" target="_blank"><span class="fa fa-download"></span> Download</a></td>
+				<td class="text-success">NEW</td>
+				<td>V2.0.0贺新春版</td>
+				<td>完整版（带演示）</td>
+				<td>47.3KB</td>
+				<td><a href="https://github.com/0936zz/mplayer/archive/min.zip" target="_blank"><span class="fa fa-download"></span> Download</a></td>
 			</tr>
 			<tr>
 				<td></td>
-				<td>mPlayer单曲版</td>
+				<td>V1.3.3</td>
+				<td>完整版（带演示）</td>
+				<td>34.9MB</td>
+				<td><a href="https://github.com/0936zz/mplayer/archive/56c5c9fc51986f616fd94f47ec4decf820b99380.zip" target="_blank"><span class="fa fa-download"></span> Download</a></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>-</td>
+				<td>MPlayer单曲版</td>
 				<td>-</td>
 				<td>即将推出</td>
 			</tr>
 		</table>
 	</div>
-	<p>如果您还不会使用，请<a href="./documentation.html">点击此处</a>查阅我们的参考文档</p>
+	<p>如果您还不会使用，请<a href="documentation.html">点击此处</a>查阅我们的参考文档</p>
 </div>
 <footer class="bg-primary">
 	<div class="container">
@@ -95,9 +120,62 @@
 		</div>
 	</div>
 </footer>
-
-
-<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<div class="mp">
+	<div class="mp-box">
+		<img src="static/img/mplayer_error.png" alt="music cover" class="mp-cover">
+		<div class="mp-info">
+			<p class="mp-name">燕归巢</p>
+			<p class="mp-singer">许嵩</p>
+			<p><span class="mp-time-current">00:00</span>/<span class="mp-time-all">00:00</span></p>
+		</div>
+		<div class="mp-btn">
+			<button class="mp-prev" title="上一首"></button>
+			<button class="mp-pause" title="播放"></button>
+			<button class="mp-next" title="下一首"></button>
+			<button class="mp-mode" title="播放模式"></button>
+			<div class="mp-vol">
+				<button class="mp-vol-img" title="静音"></button>
+				<div class="mp-vol-range" data-range_min="0" data-range_max="100" data-cur_min="80">
+					<div class="mp-vol-current"></div>
+					<div class="mp-vol-circle"></div>
+				</div>
+			</div>
+		</div>
+		<div class="mp-pro">
+			<div class="mp-pro-current"></div>
+		</div>
+		<div class="mp-menu">
+			<button class="mp-list-toggle"></button>
+			<button class="mp-lrc-toggle"></button>
+		</div>
+	</div>
+	<button class="mp-toggle">
+		<span class="mp-toggle-img"></span>
+	</button>
+	<div class="mp-lrc-box mp-lrc-show">
+		<ul class="mp-lrc"></ul>
+	</div>
+	<button class="mp-lrc-close"></button>
+	<div class="mp-list-box">
+		<ul class="mp-list-title"></ul>
+		<table class="mp-list-table">
+			<thead>
+				<tr>
+					<th>歌名</th>
+					<th>歌手</th>
+					<th>时长</th>
+				</tr>
+			</thead>
+			<tbody class="mp-list"></tbody>
+		</table>
+	</div>
+</div>
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
+<script src="static/js/page.js"></script>
+<script src="static/js/prism.js"></script>
+<script src="static/js/mplayer.min.js"></script>
+<script src="static/js/mplayer-list.js"></script>
 </body>
 </html>

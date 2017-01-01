@@ -4,11 +4,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-<title>文档 - mPlayer音乐播放器</title>
+<title>文档 - MPlayer音乐播放器</title>
 <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
-<link rel="stylesheet" href="static/style.css">
-<link rel="stylesheet" href="static/prism.css">
+<link rel="stylesheet" href="static/css/style.css">
+<link rel="stylesheet" href="static/css/prism.css">
+<link rel="stylesheet" href="static/css/mplayer.min.css">
+<link rel="shortcut icon" href="favicon.ico">
 </head>
 <body class="fixed-nav">
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -19,21 +21,21 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="./index.html">mPlayer音乐播放器</a>
+			<a class="navbar-brand" href="index.html"><img src="static/img/logo_w.png" alt="logo" class="logo-img"></a>
 		</div>
 		<div class="collapse navbar-collapse" id="collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="./index.html">首页</a></li>
-				<li><a href="./download.html">下载</a></li>
-				<li><a href="./demo.html" target="_blank">演示</a></li>
+				<li><a href="index.html">首页</a></li>
+				<li><a href="download.html">下载</a></li>
 				<li class="dropdown active">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">文档 <span class="caret"></span></a>
+					<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">文档 <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="./documentation.html">全部</a></li>
+						<li><a href="#">全部</a></li>
 						<li class="divider"></li>
-						<li><a href="./documentation.html#introduce">介绍</a></li>
-						<li><a href="./documentation.html#start">开始使用</a></li>
-						<li><a href="./documentation.html#diy">自定义</a></li>
+						<li><a href="#introduce">介绍</a></li>
+						<li><a href="#start">开始使用</a></li>
+						<li><a href="#diy">自定义</a></li>
+						<li><a href="#donate">赞助</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -45,43 +47,41 @@
 </nav>
 <div class="jumbotron">
 	<div class="container">
-		<h1>mPlayer音乐播放器</h1>
+		<h1>MPlayer音乐播放器</h1>
 		<p>高度可定制的Web音乐播放器</p>
 		<p class="btn-group hidden-xs">
-			<a class="btn btn-primary btn-lg" href="./demo.html" target="_blank"><span class="fa fa-book fa-lg"></span> 查看Demo</a>
-			<a class="btn btn-primary btn-lg" href="./download.html"><span class="fa fa-download fa-lg"></span> 下载</a>
+			<a class="btn btn-primary btn-lg" href="http://github.com/0936zz/mplayer" target="_blank"><span class="fa fa-github fa-lg"></span> View On Github</a>
+			<a class="btn btn-primary btn-lg" href="download.html"><span class="fa fa-download fa-lg"></span> 下载</a>
 		</p>
 		<p class="btn-group visible-xs">
-			<a class="btn btn-primary" href="./demo.html" target="_blank"><span class="fa fa-book fa-lg"></span> Demo</a>
-			<a class="btn btn-primary" href="./download.html"><span class="fa fa-download fa-lg"></span> 下载</a>
+			<a class="btn btn-primary" href="http://github.com/0936zz/mplayer" target="_blank"><span class="fa fa-github"></span> Github</a>
+			<a class="btn btn-primary" href="download.html"><span class="fa fa-download fa-lg"></span> 下载</a>
 		</p>
 	</div>
 </div>
-
-<div class="container">
+<div class="container" id="con">
 	<div class="pull-left do-content">
 		<h2 id="introduce">介绍</h2>
-		<h3>何为mPlayer</h3>
-		<p>mPlayer是一款高度可自定义的音乐播放器，已开源在<a href="https://github.com/0936zz/mplayer" target="_blank">Github</a>，欢迎Fork</p>
+		<h3>何为MPlayer</h3>
+		<p>MPlayer是一款基于HTML5编写的高度可定制的音乐播放器插件，已开源在<a href="https://github.com/0936zz/mplayer" target="_blank">Github</a>，欢迎Fork</p>
 		<h3>下载</h3>
-		<p>请移步<a href="./download.html">下载页面</a>下载您所需要的版本</p>
+		<p>请移步<a href="download.html">下载页面</a>下载您所需要的版本</p>
 		<div class="alert alert-warning">
 			<p><span class="glyphicon glyphicon-exclamation-sign"></span> 如果您仅仅只是使用而不更深层次的研究代码，建议您下载压缩版本，以下代码用压缩版本做演示。</p>
 		</div>
-		<h3>目录结构</h3>
-		<p>从Github上下载的源码目录结构</p>
-		<pre data-src="code/start-tree.txt" class="line-numbers" data-line="4,10"><code></code></pre>
 		<h2 id="start">开始使用</h2>
-		<p>简单的使用mPlayer</p>
+		<p>简单的使用MPlayer</p>
+		<h3>HTML结构</h3>
+		<p>MPlayer完整版的HTML结构，可<a href="#diy">自定义</a></p>
+		<pre data-src="code/start-html.html" class="line-numbers" data-line="6,9"><code></code></pre>
 		<h3>引入CSS和JS</h3>
 		<p>您需要在页面中引入一个CSS和一个JS文件</p>
-		<pre data-src="code/start-import.html" class="line-numbers" data-line="6,10"><code></code></pre>
+		<pre data-src="code/start-import.html" class="line-numbers"><code></code></pre>
 		<div class="alert alert-warning">
-			<p><span class="glyphicon glyphicon-exclamation-sign"></span> 请自行修改第6,10行的路径</p>
+			<p><span class="glyphicon glyphicon-exclamation-sign"></span> 请自行修改路径</p>
 		</div>
-		<h3>创建播放器</h3>
-		<p>接下来您需要一个用来盛放mPlayer的父容器，我们假设为上面代码的<code>div.container</code></p>
-		<p>然后您只需要用一段JavaScript代码来创建一个mPlayer播放器</p>
+		<h3>初始化播放器</h3>
+		<p>您需要用一段JavaScript代码来创建一个MPlayer播放器</p>
 		<pre data-src="code/start-create.js" class="line-numbers"><code></code></pre>
 		<h3>参数说明</h3>
 		<div class="table-responsive">
@@ -96,51 +96,27 @@
 				</tr>
 				<tr>
 					<td>containerSelector</td>
-					<td>用来包裹mPlayer播放器的容器</td>
+					<td>包裹MPlayer播放器的容器，可设置多个</td>
 					<td>无</td>
 					<td>否</td>
 					<td>jQuery Selector</td>
-					<td>1.3.3</td>
+					<td>1.3.3及以上</td>
 				</tr>
 				<tr>
-					<td>playRotate</td>
-					<td>播放时专辑图片是否旋转</td>
-					<td>true</td>
-					<td>是</td>
-					<td>Boolean</td>
-					<td>1.3.3</td>
-				</tr>
-				<tr>
-					<td>useDefaultStyle</td>
-					<td>您是否正在使用默认样式（如果您对样式有了大幅度调整或重写了样式，请将此项设置为false，否则您的排版可能会错乱，详情查看<a href="#attention">修改注意事项</a>）</td>
-					<td>true</td>
-					<td>是</td>
-					<td>Boolean</td>
-					<td>1.3.3</td>
-				</tr>
-				<tr>
-					<td>lrcHeight</td>
-					<td>歌词区域的高度（当useDefaultStyle设置为false时本配置项无效）</td>
-					<td>160</td>
-					<td>是</td>
-					<td>Int</td>
-					<td>1.3.3</td>
-				</tr>
-				<tr>
-					<td>beforePlay</td>
-					<td>每首歌播放开始前的回调函数，接受一个参数作为歌曲信息</td>
+					<td>songList</td>
+					<td>歌曲播放列表，格式请参考mplayer-list.js</td>
 					<td>无</td>
-					<td>是</td>
-					<td>Function</td>
-					<td>1.3.3</td>
+					<td>否</td>
+					<td>Array</td>
+					<td>1.0.0及以上</td>
 				</tr>
 				<tr>
-					<td>canPlay</td>
-					<td>歌曲缓冲到可以播放时的回调函数（用户跳跃播放时间时同样会触发），接受一个参数作为歌曲信息</td>
+					<td>defaultImg</td>
+					<td>专辑图片错误时显示的图片</td>
 					<td>无</td>
-					<td>是</td>
-					<td>Function</td>
-					<td>1.3.3</td>
+					<td>否</td>
+					<td>String</td>
+					<td>2.0.0及以上</td>
 				</tr>
 				<tr>
 					<td>autoPlay</td>
@@ -148,23 +124,15 @@
 					<td>true</td>
 					<td>是</td>
 					<td>Boolean</td>
-					<td>1.2.0</td>
-				</tr>
-				<tr>
-					<td>songList</td>
-					<td>歌曲播放列表</td>
-					<td>无</td>
-					<td>否</td>
-					<td>Array</td>
-					<td>1.0.0</td>
+					<td>1.2.0及以上</td>
 				</tr>
 				<tr>
 					<td>playMode</td>
-					<td>播放模式（0代表列表循环，1代表单曲循环，2代表随机播放）</td>
+					<td>播放模式（<a href="#mode">关于播放模式</a>）</td>
 					<td>0</td>
 					<td>是</td>
 					<td>Int</td>
-					<td>1.0.0</td>
+					<td>1.0.0及以上</td>
 				</tr>
 				<tr>
 					<td>playList</td>
@@ -172,7 +140,7 @@
 					<td>0</td>
 					<td>是</td>
 					<td>Int</td>
-					<td>1.0.0</td>
+					<td>1.0.0及以上</td>
 				</tr>
 				<tr>
 					<td>playSong</td>
@@ -180,17 +148,104 @@
 					<td>0</td>
 					<td>是</td>
 					<td>Int</td>
-					<td>1.0.0</td>
+					<td>1.0.0及以上</td>
+				</tr>
+				<tr>
+					<td colspan="6"><div class="text-danger text-center">以下配置项已被移除</div></td>
+				</tr>
+				<tr>
+					<td>playRotate</td>
+					<td>播放时专辑图片是否旋转<span class="text-danger">（已于V2.0.0移除）</span></td>
+					<td>true</td>
+					<td>是</td>
+					<td>Boolean</td>
+					<td>仅1.3.3</td>
+				</tr>
+				<tr>
+					<td>useDefaultStyle</td>
+					<td>您是否正在使用默认样式（如果您对样式有了大幅度调整或重写了样式，请将此项设置为false，否则您的排版可能会错乱）<span class="text-danger">（已于V2.0.0移除）</span></td>
+					<td>true</td>
+					<td>是</td>
+					<td>Boolean</td>
+					<td>仅1.3.3</td>
+				</tr>
+				<tr>
+					<td>lrcHeight</td>
+					<td>歌词区域的高度（当useDefaultStyle设置为false时本配置项无效）<span class="text-danger">（已于V2.0.0移除）</span></td>
+					<td>160</td>
+					<td>是</td>
+					<td>Int</td>
+					<td>仅1.3.3</td>
+				</tr>
+				<tr>
+					<td>beforePlay</td>
+					<td>每首歌播放开始前的回调函数，接受一个参数作为歌曲信息<span class="text-danger">（V2.0.0回调函数不在配置项中绑定，<a href="#callback">详情</a>）</span></td>
+					<td>无</td>
+					<td>是</td>
+					<td>Function</td>
+					<td>1.3.3及以上</td>
+				</tr>
+				<tr>
+					<td>canPlay</td>
+					<td>歌曲缓冲到可以播放时的回调函数（用户跳跃播放时间时同样会触发），接受一个参数作为歌曲信息<span class="text-danger">（已于V2.0.0移除）</span></td>
+					<td>无</td>
+					<td>是</td>
+					<td>Function</td>
+					<td>仅1.3.3</td>
 				</tr>
 			</table>
 		</div>
+		<h3>回调函数</h3>
+		<p>MPlayer2.0.0采用了通过回调函数绑定事件的方法，代码如下</p>
+		<pre data-src="code/use-event.js" class="line-numbers"><code></code></pre>
+		<div class="table-responsive">
+			<table class="table table-hover table-striped">
+				<tr>
+					<th>函数名</th>
+					<th>触发时间</th>
+					<th>返回值</th>
+				</tr>
+				<tr>
+					<td>afterInit</td>
+					<td>初始化完成</td>
+					<td>-</td>
+				</tr>
+				<tr>
+					<td>beforePlay</td>
+					<td>播放前</td>
+					<td>返回fasle可以取消播放</td>
+				</tr>
+				<tr>
+					<td>timeUpdate</td>
+					<td>时间变化时</td>
+					<td>-</td>
+				</tr>
+				<tr>
+					<td>end</td>
+					<td>播放完毕后</td>
+					<td>返回fasle可以取消播放下一首</td>
+				</tr>
+				<tr>
+					<td>mute</td>
+					<td>静音状态改变时</td>
+					<td>-</td>
+				</tr>
+				<tr>
+					<td>changeMode</td>
+					<td>播放模式改变时</td>
+					<td>-</td>
+				</tr>
+			</table>
+		</div>
+		<p class="text-warning">所有回调函数已使用apply改变了this指向，您可以直接在回调函数中使用this代指MPlayer对象</p>
+		<h3>API接口</h3>
+		<p>所有API接口在<a href="https://github.com/0936zz/mplayer/blob/develop/js/mplayer.js" target="_blank">开发版的JS文件</a>中已经写有详细注释，此处不再列出</p>
 		<h2 id="diy">自定义</h2>
-		<p>制作您自己风格的mPlayer</p>
+		<p>制作您自己风格的MPlayer</p>
 		<h3>说明</h3>
-		<p>如果您对mPlayer的样式不满意，您可以对其进行修改，下面会列出所有的CSS选择器及修改注意事项</p>
+		<p>MPlayer的自定义非常简单，只需添加类名即可，基本无需修改JS代码</p>
 		<h3>选择器</h3>
-		<img src="static/tip-1.jpg" alt="tip" class="img-responsive">
-		<img src="static/tip-2.jpg" alt="tip" class="img-responsive">
+		<p>您可以根据自己的页面重写HTML代码，并给相应的元素添加对应类名。并且您可以自定义样式，JS不会对元素的样式进行修改。</p>
 		<div class="table-responsive">
 			<table class="table table-hover table-striped">
 				<tr>
@@ -201,140 +256,131 @@
 				</tr>
 				<tr>
 					<td>1</td>
-					<td>专辑图片的容器</td>
-					<td>.mp-cover</td>
-					<td>其中img标签请用.mp-cover img选择</td>
+					<td>MPlayer的容器</td>
+					<td>通过JS配置项进行设置</td>
+					<td>-</td>
 				</tr>
 				<tr>
 					<td>2</td>
-					<td>处于当前状态的歌词</td>
-					<td>.mp-lrc-current</td>
-					<td>-</td>
+					<td>歌曲图片</td>
+					<td>.mp-cover</td>
+					<td>自动更新src属性</td>
 				</tr>
 				<tr>
 					<td>3</td>
-					<td>非当前状态的歌词</td>
-					<td>.mp-lrc</td>
-					<td>-</td>
+					<td>歌曲名</td>
+					<td>.mp-name</td>
+					<td>自动更新HTML内容</td>
 				</tr>
 				<tr>
 					<td>4</td>
-					<td>歌曲的已播放时间和总时间</td>
-					<td>.mp-progress-time</td>
-					<td>-</td>
+					<td>歌手名</td>
+					<td>.mp-singer</td>
+					<td>自动更新HTML内容</td>
 				</tr>
 				<tr>
 					<td>5</td>
-					<td>播放模式容器</td>
-					<td>.mp-modebox</td>
-					<td>其中的各个按钮为a标签 c* f* h*</td>
+					<td>当前时间</td>
+					<td>.mp-time-current</td>
+					<td>自动更新HTML内容</td>
 				</tr>
 				<tr>
 					<td>6</td>
-					<td>列表显示开关</td>
-					<td>.mp-menu-switch</td>
-					<td>c* f* h*</td>
+					<td>总时间</td>
+					<td>.mp-time-all</td>
+					<td>自动更新HTML内容</td>
 				</tr>
 				<tr>
 					<td>7</td>
-					<td>静音按钮</td>
-					<td>.mp-vol-mute</td>
-					<td>f* h*</td>
+					<td>上一首按钮</td>
+					<td>.mp-prev</td>
+					<td>自动绑定click事件</td>
 				</tr>
 				<tr>
 					<td>8</td>
-					<td>音量调节</td>
-					<td>.mp-vol-range</td>
-					<td>-</td>
+					<td>播放/暂停按钮</td>
+					<td>.mp-pause</td>
+					<td>自动绑定click事件 <a href="#help-1">自动添加class #1</a></td>
 				</tr>
 				<tr>
 					<td>9</td>
-					<td>播放按钮</td>
-					<td>.mp-button-play</td>
-					<td>f* h*</td>
+					<td>下一首</td>
+					<td>.mp-next</td>
+					<td>自动绑定click事件</td>
 				</tr>
 				<tr>
 					<td>10</td>
-					<td>下一首按钮</td>
-					<td>#mp-button-next</td>
-					<td>不推荐使用id写样式，尽量使用.mp-buttonbox a给所有控制按钮设置样式，然后覆盖播放按钮的样式 f* h*</td>
+					<td>静音/取消静音按钮</td>
+					<td>.mp-vol-img</td>
+					<td>自动绑定click事件 <a href="#help-2">自动添加class #2</a></td>
 				</tr>
 				<tr>
 					<td>11</td>
-					<td>上一首按钮</td>
-					<td>#mp-button-prev</td>
-					<td>同上</td>
+					<td>音量调节滑块</td>
+					<td>.mp-vol-range</td>
+					<td><a href="#help-3">自动绑定事件 #3</a></td>
 				</tr>
 				<tr>
 					<td>12</td>
-					<td>总进度条</td>
-					<td>.mp-progress-total</td>
-					<td>-</td>
+					<td>当前进度条</td>
+					<td>.mp-pro-current</td>
+					<td>自动修改width样式</td>
 				</tr>
 				<tr>
 					<td>13</td>
-					<td>已播放的进度条</td>
-					<td>.mp-progress-current</td>
-					<td>-</td>
+					<td>总进度条</td>
+					<td>.mp-pro</td>
+					<td>自动绑定click事件（后续考虑取消）</td>
 				</tr>
 				<tr>
 					<td>14</td>
-					<td>歌名、歌手</td>
-					<td>.mp-playing-name</td>
-					<td>歌名为h3标签，歌手为h3中嵌套的small标签</td>
+					<td>歌词</td>
+					<td>.mp-lrc</td>
+					<td>自动更新scrollTop属性</td>
 				</tr>
 				<tr>
 					<td>15</td>
-					<td>当前显示的列表名称</td>
-					<td>.mp-list-title</td>
-					<td>-</td>
+					<td>当前歌词</td>
+					<td>.mp-lrc-current</td>
+					<td>自动切换元素</td>
 				</tr>
 				<tr>
 					<td>16</td>
-					<td>列表项</td>
-					<td>.mp-list-select-ul li</td>
-					<td>h*</td>
+					<td>列表名称</td>
+					<td>.mp-list-title</td>
+					<td>自动更新HTML内容 自动为其li子元素绑定click事件</td>
 				</tr>
 				<tr>
 					<td>17</td>
-					<td>当前正在播放的歌曲</td>
-					<td>.mp-list-song-current</td>
-					<td>-</td>
+					<td>当前显示的列表的标题</td>
+					<td>.mp-list-title-current</td>
+					<td>自动切换元素</td>
 				</tr>
 				<tr>
 					<td>18</td>
-					<td>正常歌曲</td>
-					<td>.mp-list-song</td>
-					<td>h*</td>
+					<td>当前显示的列表</td>
+					<td>.mp-list</td>
+					<td>自动更新HTML内容 自动为其子元素绑定click事件</td>
 				</tr>
 				<tr>
 					<td>19</td>
-					<td>所有歌曲列表</td>
-					<td>.mp-list-select-on .mp-list-select-ul</td>
-					<td>o*</td>
-				</tr>
-				<tr>
-					<td>20</td>
-					<td>整个列表容器</td>
-					<td>.mp-list-on .mp-listbox</td>
-					<td>o*</td>
+					<td>当前播放的音乐</td>
+					<td>.mp-list-current</td>
+					<td>自动切换元素</td>
 				</tr>
 			</table>
 		</div>
+		<p class="text-warning">MPlayer的所有选择器均为类选择器，如果您有多个容器，只需在所有容器中添加同样的类名，MPlayer会自动更新所有元素</p>
 		<div class="alert alert-info">
-			<p>c*：该元素被点击后将添加.mp-deep类</p>
-			<p>f*：请用font-size和color改变图标的大小和颜色</p>
-			<p>h*：该元素有鼠标划过效果</p>
-			<p>o*：该元素有显示和隐藏效果，点击开关后会给该元素的父元素增加一个class，修改时应注意显示和隐藏问题</p>
+			<p># 注释</p>
+			<p id="help-1">1. 暂停时为mp-pause类，应设置播放图片；开始播放后会添加mp-play类，设置暂停图片。请确保mp-play的权重大于mp-pause</p>
+			<p id="help-2">2. 同上，静音时会添加mp-mute类</p>
+			<p id="help-3">3. 事件名在配置项中设置，并且需要用代码触发此事件（$.fn.trigger），需要一个value参数</p>
 		</div>
-		<p>有部分元素没有在此列出，如要使用请使用审查元素查看类名或ID</p>
-		<h3 id="attention">修改注意事项</h3>
-		<div class="alert alert-warning">
-			<p><span class="glyphicon glyphicon-exclamation-sign"></span> 如果您对CSS有很大的调整（修改了大盒子的宽高）或重写了CSS，请将useDefaultStyle配置项设置为false，否则可能会破坏您的布局</p>
-		</div>
-		<p>以下代码会对部分盒子的高度进行计算（mplayer.js:124-138）</p>
-		<pre data-src="code/diy-calc.js" class="line-numbers" data-start="124"><code></code></pre>
-		<p></p>
+		<p>注：有时间可能会写MPlayer定制详细教程</p>
+		<h2 id="donate">赞助</h2>
+		<p>您的赞助让我更有开发的动力</p>
+		<img src="static/img/qrcode.png" alt="donate" class="img-responsive">
 	</div>
 </div>
 <footer class="bg-primary">
@@ -350,9 +396,63 @@
 		</div>
 	</div>
 </footer>
-<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-<script src="static/prism.js"></script>
+<div class="mp">
+	<div class="mp-box">
+		<img src="static/img/mplayer_error.png" alt="music cover" class="mp-cover">
+		<div class="mp-info">
+			<p class="mp-name">燕归巢</p>
+			<p class="mp-singer">许嵩</p>
+			<p><span class="mp-time-current">00:00</span>/<span class="mp-time-all">00:00</span></p>
+		</div>
+		<div class="mp-btn">
+			<button class="mp-prev" title="上一首"></button>
+			<button class="mp-pause" title="播放"></button>
+			<button class="mp-next" title="下一首"></button>
+			<button class="mp-mode" title="播放模式"></button>
+			<div class="mp-vol">
+				<button class="mp-vol-img" title="静音"></button>
+				<div class="mp-vol-range" data-range_min="0" data-range_max="100" data-cur_min="80">
+					<div class="mp-vol-current"></div>
+					<div class="mp-vol-circle"></div>
+				</div>
+			</div>
+		</div>
+		<div class="mp-pro">
+			<div class="mp-pro-current"></div>
+		</div>
+		<div class="mp-menu">
+			<button class="mp-list-toggle"></button>
+			<button class="mp-lrc-toggle"></button>
+		</div>
+	</div>
+	<button class="mp-toggle">
+		<span class="mp-toggle-img"></span>
+	</button>
+	<div class="mp-lrc-box mp-lrc-show">
+		<ul class="mp-lrc"></ul>
+	</div>
+	<button class="mp-lrc-close"></button>
+	<div class="mp-list-box">
+		<ul class="mp-list-title"></ul>
+		<table class="mp-list-table">
+			<thead>
+				<tr>
+					<th>歌名</th>
+					<th>歌手</th>
+					<th>时长</th>
+				</tr>
+			</thead>
+			<tbody class="mp-list"></tbody>
+		</table>
+	</div>
+</div>
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-nstslider/1.0.13/jquery.nstSlider.min.js"></script>
+<script src="static/js/page.js"></script>
+<script src="static/js/prism.js"></script>
+<script src="static/js/mplayer.min.js"></script>
+<script src="static/js/mplayer-list.js"></script>
 <script>
 </script>
 </body>
